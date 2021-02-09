@@ -1,17 +1,17 @@
 import React from 'react';
+import Task from '../Task'
 
 class ToDo extends React.Component{
 state={
-    tasks: [
-        'Task 1', 'Task 2', 'Task 3'
-    ]
+    tasks: ["Task 1", "Task 2", "Task 3"]
 }
 
 
     render(){
+        const {tasks}=this.state;
         const Tasks=this.state.tasks.map((task, index) =>{
             return(
-                <p key={index} className="task"> {task} </p>
+                <Task task = {task} key = {index} />
             )
         })
 
