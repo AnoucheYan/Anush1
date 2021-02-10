@@ -1,41 +1,45 @@
 import React from 'react';
+import AddNewTask from '../AddNewTask';
 import Task from '../Task'
 
-class ToDo extends React.Component{
-state={
-    tasks: ["Task 1", "Task 2", "Task 3"]
-}
+
+class ToDo extends React.Component {
+    state = {
+        tasks: ["Task 1", "Task 2", "Task 3"],
+        inputValue: ''
+    }
 
 
-    render(){
-        const {tasks}=this.state;
-        const Tasks=this.state.tasks.map((task, index) =>{
-            return(
+    hendleCatchValue = (inputValue) => {
+        this.setState ({
+            inputValue
+        });
+    }
+
+    render () {
+        const {tasks, inputValue} = this.state;
+        const Tasks = this.state.tasks.map((task, index) => {
+            return (
                 <Task task = {task} key = {index} />
             )
         })
 
-
-        return(
+        return (
             <div>
                 <h1>ToDo</h1>
-                <div className= "task_wrapper">
+                <div className = "task_wrapper">
                     {Tasks}
                 </div>
 
+                <AddNewTask onSubmit = {this.hendleCatchValue} />
+
                 <div>
-                    <input 
-                        type="text"
-                        placeholder="Add new task"
-                    ></input>
-                    <button>Add</button>
+                    <p> You have type: {inputValue} </p>
                 </div>
             
             </div>
         )
     }
 }
-
-
 
 export default ToDo;
