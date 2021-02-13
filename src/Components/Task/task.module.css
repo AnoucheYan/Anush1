@@ -1,0 +1,9 @@
+.task{
+    width: 150px;
+    border-radius: 5px;
+    background-color: rgba(218, 134, 162, .5);
+    color: palevioletred;
+    font-weight: bold;
+    margin: 20px;
+    padding: 30px;    
+  }

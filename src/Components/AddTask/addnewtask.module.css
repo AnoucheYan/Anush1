@@ -1,0 +1,16 @@
+.addButton{
+    font-weight: bold;
+    border:none;
+    outline:none;
+    background-color:rgba(218, 134, 162, .5);
+    border-radius: 5px;
+    height: 30px;
+    color: palevioletred;
+}
+
+.myInput{
+    border-radius: 5px;
+    border: 2px solid rgba(218, 134, 162, .5);
+    color: palevioletred;
+    height: 30px;
+}

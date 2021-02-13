@@ -48,17 +48,3 @@ code {
   font-weight: bold;
   color: lightcoral;
 }
-
-.task_wrapper{
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-}
-
-.task{
-  width: 300px;
-  border-radius: 5px;
-  border: 2px solid palevioletred;
-  margin: 25px;
-  padding: 10px;
-}

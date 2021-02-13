@@ -1,4 +1,6 @@
 import React from 'react';
+import styles from './addnewtask.module.css'
+
 
 class AddNewTask extends React.Component {
     
@@ -6,43 +8,39 @@ class AddNewTask extends React.Component {
         inputValue: ''
     }
     
-    hendleChange = (e) => {
+    hendleChange = (event) => {
+        const {value} = event.target;
         this.setState({
-            inputValue: e.target.value
+            inputValue: value
         })
-    }
-    
-    handleReset = () => {
-        this.setState ({
-            inputValue:''
-        })
-    }
-    
-    handleSubmit = (e) => {
-        const {onSubmit} = this.props;
-        const {inputValue} = this.state;
-        onSubmit(inputValue);
     }
       
     render () {
-        const {inputValue} = this.state;    
+        const {inputValue} = this.state;
+        const {handleSubmit} = this.props;
+
+        const handleS = () => {
+            handleSubmit (inputValue)
+            this.setState({
+                inputValue: ''
+            })
+        }
     
         return (
             <div>   
-                <div>
+                <div> 
                     <input 
                         type = "text"
                         placeholder = "Add new task"
                         onChange = {this.hendleChange}
                         value = {inputValue}
+                        className={styles.myInput}
                     ></input>
                     <button 
-                        onClick = {this.handleSubmit}
+                        // onClick = {()=>handleSubmit(inputValue)}
+                        onClick = {handleS}
+                        className={styles.addButton}
                     >Add</button>
-                    <button
-                        onClick = {this.handleReset}
-                    >Reset
-                    </button>
                 </div>               
             </div>
         )
