@@ -1,9 +1,17 @@
 .task{
-    width: 150px;
+    width: 100%;
+    height: 200px;
     border-radius: 5px;
     background-color: rgba(218, 134, 162, .5);
     color: palevioletred;
     font-weight: bold;
-    margin: 20px;
-    padding: 30px;    
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  .parMargin{
+    margin: 0;
+  }
+

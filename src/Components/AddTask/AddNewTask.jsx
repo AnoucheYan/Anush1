@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './addnewtask.module.css'
+import styles from './addnewtask.module.css';
 
 
 class AddNewTask extends React.Component {

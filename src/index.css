@@ -48,3 +48,7 @@ code {
   font-weight: bold;
   color: lightcoral;
 }
+
+*{
+  box-sizing: border-box;
+}
