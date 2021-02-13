@@ -20,13 +20,11 @@ class ToDo extends React.Component {
     }
 
     render () {
-        const {tasks} = this.state;
         const Tasks = this.state.tasks.map((task, {index=idGenerator()}) => {
             return (
-                <Col xs={12} sm={6} md={4} lg={3} className="d-flex justify-content-center mt-3">
+                <Col key = {index} xs={12} sm={6} md={4} lg={3} className="d-flex justify-content-center mt-3">
                     <Task
                         task = {task} 
-                        key = {index}
                     />
                 </Col>
             )
