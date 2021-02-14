@@ -20,7 +20,7 @@ class ToDo extends React.Component {
 
     render () {
         const {tasks} = this.state;
-        const Tasks = this.state.tasks.map((task, index) => {
+        const Tasks = tasks.map((task, index) => {
             return (
                 <Task task = {task} key = {index} />
             )
