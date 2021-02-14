@@ -17,7 +17,7 @@ class ToDo extends React.Component {
     }
 
     render () {
-        const {tasks, inputValue} = this.state;
+        const {inputValue} = this.state;
         const Tasks = this.state.tasks.map((task, index) => {
             return (
                 <Task task = {task} key = {index} />
