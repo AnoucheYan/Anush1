@@ -7,24 +7,55 @@ import idGenerator from '../../helpers/idGenerator';
 
 class ToDo extends React.Component {
     state = {
-        tasks: ["Task 1", "Task 2", "Task 3"],
+        tasks :[
+            {
+                _id: idGenerator(),
+                title: 'Task 1'
+            },
+            {
+                _id: idGenerator(),
+                title: 'Task 2'
+            },
+            {
+                _id: idGenerator(),
+                title: 'Task 3'
+            },    
+        ],
     }
 
     handleSubmit = (value) => {
         if(!value) return;
         const tasks = [...this.state.tasks];
-        tasks.push (value);
+        tasks.push (
+            {
+                _id: idGenerator(),
+                title: value
+            }
+        );
         this.setState ({
             tasks
         });
     }
 
+    handleDelTask = (id) => {
+        let tasks = [...this.state.tasks];
+
+        tasks = tasks.filter(item => item._id !== id);
+
+        this.setState({
+            tasks
+        });
+    }
+
     render () {
-        const Tasks = this.state.tasks.map((task, {index=idGenerator()}) => {
+        const Tasks = this.state.tasks.map(task => {
             return (
-                <Col key = {index} xs={12} sm={6} md={4} lg={3} className="d-flex justify-content-center mt-3">
+                <Col key = {task._id} 
+                    xs={12} sm={6} md={4} lg={3} 
+                    className="d-flex justify-content-center mt-3">
                     <Task
-                        task = {task} 
+                        task = {task}
+                        handleDelTask = {this.handleDelTask}
                     />
                 </Col>
             )

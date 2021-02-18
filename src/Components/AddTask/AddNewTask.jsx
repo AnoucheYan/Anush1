@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from './addnewtask.module.css';
+// import styles from './addnewtask.module.css';
+import {Button, Form} from 'react-bootstrap';
 
 
 class AddNewTask extends React.Component {
@@ -19,7 +20,9 @@ class AddNewTask extends React.Component {
         const {inputValue} = this.state;
         const {handleSubmit} = this.props;
 
-        const handleS = () => {
+        const handleS = ({key, type}) => {
+            if(type === 'keypress' && key !== 'Enter') return;
+
             handleSubmit (inputValue)
             this.setState({
                 inputValue: ''
@@ -28,19 +31,22 @@ class AddNewTask extends React.Component {
     
         return (
             <div>   
-                <div> 
-                    <input 
+                <div className="d-flex justify-content-center"> 
+                    <Form.Control
                         type = "text"
                         placeholder = "Add new task"
                         onChange = {this.hendleChange}
                         value = {inputValue}
-                        className={styles.myInput}
-                    ></input>
-                    <button 
-                        // onClick = {()=>handleSubmit(inputValue)}
+                        onKeyPress = {handleS}
+                        style = {{width:"60%"}}
+                    />
+                    <Button
+                        className="d-block"
+                        variant = "primary"
                         onClick = {handleS}
-                        className={styles.addButton}
-                    >Add</button>
+                        disabled = {!!!inputValue}
+                    >Add
+                    </Button>
                 </div>               
             </div>
         )

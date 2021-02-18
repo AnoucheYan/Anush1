@@ -7,11 +7,11 @@
     font-weight: bold;
     padding: 30px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    justify-content: space-between;
+    flex-direction: column;
+}
 
-  .parMargin{
-    margin: 0;
-  }
+.parMargin{
+  margin: 0;
+}
 
