@@ -5,12 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 
-const Task = ( {task, handleDelTask} ) => {
+const Task = ( {task, handleDelTask, setRemoveTaskId, disabled} ) => {
     return(
         <div className={styles.task}>
 
             <div className="d-flex justify-content-end">
-                <input type="checkbox" />
+                <input
+                    type="checkbox"
+                    onClick={() => setRemoveTaskId(task._id)}
+                />
             </div>
 
             <div className="">
@@ -21,9 +24,9 @@ const Task = ( {task, handleDelTask} ) => {
             
             <div>
                 <Button
-                    className="w-auto"
                     variant = "danger"
                     onClick = { () => handleDelTask(task._id) }
+                    disabled = {disabled}
                 >
                     <FontAwesomeIcon icon = {faTrash} />
                 </Button>

@@ -18,7 +18,7 @@ class AddNewTask extends React.Component {
       
     render () {
         const {inputValue} = this.state;
-        const {handleSubmit} = this.props;
+        const {handleSubmit, disabled} = this.props;
 
         const handleS = ({key, type}) => {
             if(type === 'keypress' && key !== 'Enter') return;
@@ -39,6 +39,7 @@ class AddNewTask extends React.Component {
                         value = {inputValue}
                         onKeyPress = {handleS}
                         style = {{width:"60%"}}
+                        disabled={disabled}
                     />
                     <Button
                         className="d-block"
