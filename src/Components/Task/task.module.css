@@ -15,3 +15,7 @@
   margin: 0;
 }
 
+.checked{
+  opacity: .6;
+}
+

@@ -21,8 +21,7 @@ class ToDo extends React.Component {
                 title: 'Task 3'
             },
         ],
-        // removeTasks:[],
-        removeTasks: new Set(), //
+        removeTasks: new Set(),
     }
 
     handleSubmit = (value) => {
@@ -50,20 +49,13 @@ class ToDo extends React.Component {
     }
 
     setRemoveTaskId = (_id) => {
-        // let removeTasks = [...this.state.removeTasks];
 
-        // if (removeTasks.includes(_id)) {
-        //     removeTasks = removeTasks.filter(id => id !== _id);
-        // } else {
-        //     removeTasks.push(_id);
-        // }
+        let removeTasks = new Set (this.state.removeTasks)
 
-        let removeTasks = new Set (this.state.removeTasks) //
-
-        if (removeTasks.has(_id)) { //
-            removeTasks.delete(_id); //
+        if (removeTasks.has(_id)) {
+            removeTasks.delete(_id);
         } else {
-            removeTasks.add(_id); //
+            removeTasks.add(_id);
         }
       
         this.setState ({
@@ -74,16 +66,12 @@ class ToDo extends React.Component {
     deleteTasks = () => {
         let tasks = [...this.state.tasks];
         
-        // let removeTasks = [...this.state.removeTasks];
-        // tasks = tasks.filter(item => !removeTasks.includes(item._id))
-        
-        let removeTasks = new Set (this.state.removeTasks) //          
-        tasks = tasks.filter(item => !removeTasks.has(item._id)) //
+        let removeTasks = new Set (this.state.removeTasks)          
+        tasks = tasks.filter(item => !removeTasks.has(item._id))
 
         this.setState ({
             tasks,
-            // removeTasks:[]
-            removeTasks: new Set () //
+            removeTasks: new Set ()
         });
     }
 
@@ -98,8 +86,8 @@ class ToDo extends React.Component {
                         task = {task}
                         handleDelTask = {this.handleDelTask}
                         setRemoveTaskId = {this.setRemoveTaskId}
-                        // disabled={!!removeTasks.length}
-                        disabled={!!removeTasks.size} //
+                        disabled = {!!removeTasks.size} 
+                        checked = {removeTasks.has(task._id)}
                     />
                 </Col>
             )
@@ -114,8 +102,7 @@ class ToDo extends React.Component {
                             <h1 className = {styles.heading}>ToDo</h1>
                             <AddNewTask 
                                 handleSubmit = {this.handleSubmit} 
-                                // disabled={!!removeTasks.length}
-                                disabled={!!removeTasks.size} //
+                                disabled = {!!removeTasks.size}
                             />
                         </Col>
                     </Row>
@@ -129,8 +116,7 @@ class ToDo extends React.Component {
                             <Button
                                 variant = "danger"
                                 onClick = {this.deleteTasks}
-                                // disabled = {!!!removeTasks.length}
-                                disabled = {!!!removeTasks.size} //
+                                disabled = {!!!removeTasks.size}
                             >
                                 Remove
                             </Button>

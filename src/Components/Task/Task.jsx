@@ -1,13 +1,20 @@
-import React from 'react';
+import React, {memo} from 'react';
 import styles from './task.module.css';
 import {Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 
-const Task = ( {task, handleDelTask, setRemoveTaskId, disabled} ) => {
+const Task = ({
+    task,
+    handleDelTask,
+    setRemoveTaskId,
+    disabled,
+    checked
+}) => {
+    
     return(
-        <div className={styles.task}>
+        <div className={`${styles.task} ${checked && styles.checked}`}>
 
             <div className="d-flex justify-content-end">
                 <input
@@ -35,4 +42,4 @@ const Task = ( {task, handleDelTask, setRemoveTaskId, disabled} ) => {
     )
 }
 
-export default Task;
+export default memo(Task);
