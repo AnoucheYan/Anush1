@@ -22,6 +22,7 @@ class ToDo extends React.Component {
             },
         ],
         removeTasks: new Set(),
+        isAllChecked: false
     }
 
     handleSubmit = (value) => {
@@ -71,13 +72,32 @@ class ToDo extends React.Component {
 
         this.setState ({
             tasks,
-            removeTasks: new Set ()
+            removeTasks: new Set (),
+            isAllChecked: false
+        });
+    }
+
+    handleCheck = () => {
+        const {tasks, isAllChecked} = this.state;
+        let removeTasks = new Set()
+
+        if (!isAllChecked) {
+            removeTasks = new Set(this.state.removeTasks);
+
+            tasks.forEach(task => {
+                removeTasks.add(task._id)
+            });
+        }
+        
+        this.setState ({
+            removeTasks,
+            isAllChecked: !isAllChecked
         });
     }
 
     render () {
-        const {removeTasks} = this.state;
-        const Tasks = this.state.tasks.map(task => {
+        const {removeTasks, tasks, isAllChecked} = this.state;
+        const Tasks = tasks.map(task => {
             return (
                 <Col key = {task._id} 
                     xs={12} sm={6} md={4} lg={3} 
@@ -119,6 +139,14 @@ class ToDo extends React.Component {
                                 disabled = {!!!removeTasks.size}
                             >
                                 Remove
+                            </Button>
+                            <Button
+                                variant = "primary"
+                                className = "ml-3"
+                                onClick = {this.handleCheck}
+                                disabled = {!!!tasks.length}
+                            >
+                                {isAllChecked? 'Remove selected' : 'Select all'}
                             </Button>
                         </Col>
                     </Row>

@@ -19,7 +19,8 @@ const Task = ({
             <div className="d-flex justify-content-end">
                 <input
                     type="checkbox"
-                    onClick={() => setRemoveTaskId(task._id)}
+                    onChange={() => setRemoveTaskId(task._id)}
+                    checked = {checked}
                 />
             </div>
 
