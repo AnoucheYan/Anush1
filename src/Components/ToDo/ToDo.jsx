@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import AddNewTask from '../AddTask/AddNewTask';
 import Task from '../Task/Task';
 import styles from './todo.module.css';
@@ -114,45 +114,48 @@ class ToDo extends React.Component {
         })
 
         return (
-            <div>
-                <Container>
+            <Fragment>
+                <div>
+                    <Container>
 
-                    <Row className="justify-content-center mt-4">
-                        <Col>
-                            <h1 className = {styles.heading}>ToDo</h1>
-                            <AddNewTask 
-                                handleSubmit = {this.handleSubmit} 
-                                disabled = {!!removeTasks.size}
-                            />
-                        </Col>
-                    </Row>
+                        <Row className="justify-content-center mt-4">
+                            <Col>
+                                <h1 className = {styles.heading}>ToDo</h1>
+                                <AddNewTask 
+                                    handleSubmit = {this.handleSubmit} 
+                                    disabled = {!!removeTasks.size}
+                                />
+                            </Col>
+                        </Row>
 
-                    <Row className="justify-content-center mt-4">
-                        {Tasks}
-                    </Row>
+                        <Row className="justify-content-center mt-4">
+                            {Tasks}
+                        </Row>
 
-                    <Row className="mt-4">
-                        <Col>
-                            <Button
-                                variant = "danger"
-                                onClick = {this.deleteTasks}
-                                disabled = {!!!removeTasks.size}
-                            >
-                                Remove
-                            </Button>
-                            <Button
-                                variant = "primary"
-                                className = "ml-3"
-                                onClick = {this.handleCheck}
-                                disabled = {!!!tasks.length}
-                            >
-                                {isAllChecked? 'Remove selected' : 'Select all'}
-                            </Button>
-                        </Col>
-                    </Row>
+                        <Row className="mt-4">
+                            <Col>
+                                <Button
+                                    variant = "danger"
+                                    onClick = {this.deleteTasks}
+                                    disabled = {!!!removeTasks.size}
+                                >
+                                    Remove
+                                </Button>
+                                
+                                <Button
+                                    variant = "primary"
+                                    className = "ml-3"
+                                    onClick = {this.handleCheck}
+                                    disabled = {!!!tasks.length}
+                                >
+                                    {isAllChecked? 'Remove selected' : 'Select all'}
+                                </Button>
+                            </Col>
+                        </Row>
 
-                </Container>
-            </div>
+                    </Container>
+                </div>
+            </Fragment>
         )
     }
 }

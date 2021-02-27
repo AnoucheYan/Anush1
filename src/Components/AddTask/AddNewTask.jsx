@@ -1,21 +1,32 @@
 import React from 'react';
 // import styles from './addnewtask.module.css';
 import {Button, Form} from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 
 class AddNewTask extends React.Component {
-    
-    state = {
-        inputValue: ''
+
+    constructor (props) {
+        super(props);
+
+        this.inputRef = React.createRef()
+
+        this.state = {
+            inputValue: ''
+        }
     }
-    
+        
     hendleChange = (event) => {
         const {value} = event.target;
         this.setState({
             inputValue: value
         })
     }
-      
+    
+    componentDidMount () {
+        this.inputRef.current.focus();
+    }
+
     render () {
         const {inputValue} = this.state;
         const {handleSubmit, disabled} = this.props;
@@ -39,7 +50,8 @@ class AddNewTask extends React.Component {
                         value = {inputValue}
                         onKeyPress = {handleS}
                         style = {{width:"60%"}}
-                        disabled={disabled}
+                        disabled = {disabled}
+                        ref = {this.inputRef}
                     />
                     <Button
                         className="d-block"
@@ -52,6 +64,11 @@ class AddNewTask extends React.Component {
             </div>
         )
     }
+}
+
+AddNewTask.propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired
 }
         
 export default AddNewTask;

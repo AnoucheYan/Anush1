@@ -1,8 +1,9 @@
 import React, {memo} from 'react';
 import styles from './task.module.css';
 import {Button} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import PropTypes from 'prop-types';
 
 
 const Task = ({
@@ -41,6 +42,17 @@ const Task = ({
             </div>          
         </div>
     )
+}
+
+Task.propTypes = {
+    task: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired
+    }),
+    handleDelTask: PropTypes.func.isRequired,
+    setRemoveTaskId: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    checked: PropTypes.bool.isRequired
 }
 
 export default memo(Task);
