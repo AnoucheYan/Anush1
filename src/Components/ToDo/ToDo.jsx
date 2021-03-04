@@ -4,34 +4,43 @@ import Task from '../Task/Task';
 import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import idGenerator from '../../helpers/idGenerator';
+import Conf from '../Conf/Conf';
+import EditTaskModal from'../EditTaskModal/EditTaskModal';
 
 class ToDo extends React.Component {
     state = {
         tasks :[
             {
                 _id: idGenerator(),
-                title: 'Task 1'
+                title: 'Spring',
+                description: 'During springtime, the daylight hours become longer, the sun shines a little stronger, and flowers begin to bloom!'
             },
             {
                 _id: idGenerator(),
-                title: 'Task 2'
+                title: 'Summer',
+                description: 'Summertime’s the hottest season of the year! The days are longer and the sun shines brightly in a clear sky.'
             },
             {
                 _id: idGenerator(),
-                title: 'Task 3'
+                title: 'Autumn',
+                description: 'The days become shorter, leaves start to fall from the trees, and piles of leaves rest on the ground. Also, the temperatures start dropping and it gets a little bit colder every day.'
             },
         ],
         removeTasks: new Set(),
-        isAllChecked: false
+        isAllChecked: false,
+        confirmRemoving: false,
+        changable: null,
+        show: false
     }
 
-    handleSubmit = (value) => {
-        if(!value) return;
+    handleSubmit = (dataObj) => {
+        if(!dataObj.title || !dataObj.description) return;
         const tasks = [...this.state.tasks];
         tasks.push (
             {
                 _id: idGenerator(),
-                title: value
+                title: dataObj.title,
+                description: dataObj.description
             }
         );
         this.setState ({
@@ -95,8 +104,44 @@ class ToDo extends React.Component {
         });
     }
 
+    showHideModal = () => {
+        this.setState({
+            confirmRemoving: !this.state.confirmRemoving
+        });
+    }
+
+    // setEditTask = (task) => { //
+    //     this.setState({
+    //         changable: task
+    //     });
+    // }
+
+    // changableNull = () => { //
+    //     this.setState({
+    //         changable: null
+    //     });
+    // }
+
+    showHideEdit = (task) => {
+        let show = !this.state.show
+        this.setState ({
+            changable: task,
+            show
+        });
+    }
+
+    edit = (changedTask) => {
+        const tasks = [...this.state.tasks];
+        const index = tasks.findIndex(task => task._id === changedTask._id);
+        tasks[index] = changedTask;
+
+        this.setState({
+            tasks
+        });
+    }
+
     render () {
-        const {removeTasks, tasks, isAllChecked} = this.state;
+        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, show} = this.state;
         const Tasks = tasks.map(task => {
             return (
                 <Col key = {task._id} 
@@ -108,6 +153,7 @@ class ToDo extends React.Component {
                         setRemoveTaskId = {this.setRemoveTaskId}
                         disabled = {!!removeTasks.size} 
                         checked = {removeTasks.has(task._id)}
+                        showHideEdit = {this.showHideEdit}
                     />
                 </Col>
             )
@@ -120,7 +166,7 @@ class ToDo extends React.Component {
 
                         <Row className="justify-content-center mt-4">
                             <Col>
-                                <h1 className = {styles.heading}>ToDo</h1>
+                                <h1 className = {styles.heading}>Seasons</h1>
                                 <AddNewTask 
                                     handleSubmit = {this.handleSubmit} 
                                     disabled = {!!removeTasks.size}
@@ -129,6 +175,7 @@ class ToDo extends React.Component {
                         </Row>
 
                         <Row className="justify-content-center mt-4">
+                            {!tasks.length && <div>You have deleted all seasons. You can add seasons again.</div>}
                             {Tasks}
                         </Row>
 
@@ -136,8 +183,8 @@ class ToDo extends React.Component {
                             <Col>
                                 <Button
                                     variant = "danger"
-                                    onClick = {this.deleteTasks}
                                     disabled = {!!!removeTasks.size}
+                                    onClick = {this.showHideModal}
                                 >
                                     Remove
                                 </Button>
@@ -154,6 +201,19 @@ class ToDo extends React.Component {
                         </Row>
 
                     </Container>
+
+                    {confirmRemoving && <Conf 
+                        onHide = {this.showHideModal}
+                        onSubmit = {this.deleteTasks}
+                        modalMessage = {`Can I delete ${removeTasks.size} item???`}
+                    />}
+
+                    {show && <EditTaskModal
+                        changable = {changable}
+                        onHide = {this.showHideEdit}
+                        onSubmit = {this.edit}
+                    />}
+                    
                 </div>
             </Fragment>
         )

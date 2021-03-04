@@ -12,15 +12,16 @@ class AddNewTask extends React.Component {
         this.inputRef = React.createRef()
 
         this.state = {
-            inputValue: ''
+            title: '',
+            description:''
         }
     }
         
     hendleChange = (event) => {
-        const {value} = event.target;
+        const {name, value} = event.target;
         this.setState({
-            inputValue: value
-        })
+            [name]: value
+        });
     }
     
     componentDidMount () {
@@ -28,38 +29,60 @@ class AddNewTask extends React.Component {
     }
 
     render () {
-        const {inputValue} = this.state;
+        const {title, description} = this.state;
         const {handleSubmit, disabled} = this.props;
 
         const handleS = ({key, type}) => {
             if(type === 'keypress' && key !== 'Enter') return;
 
-            handleSubmit (inputValue)
+            const dataObj = {
+                title,
+                description
+            }
+
+            handleSubmit (dataObj)
             this.setState({
-                inputValue: ''
+                title: '',
+                description: ''
             })
         }
     
         return (
             <div>   
-                <div className="d-flex justify-content-center"> 
+                <div className="d-flex flex-column align-items-center"> 
                     <Form.Control
                         type = "text"
-                        placeholder = "Add new task"
+                        placeholder = "Add new task's title"
                         onChange = {this.hendleChange}
-                        value = {inputValue}
+                        value = {title}
                         onKeyPress = {handleS}
                         style = {{width:"60%"}}
                         disabled = {disabled}
                         ref = {this.inputRef}
+                        name = "title"
                     />
-                    <Button
-                        className="d-block"
-                        variant = "primary"
-                        onClick = {handleS}
-                        disabled = {!!!inputValue}
-                    >Add
-                    </Button>
+
+                    <Form.Control 
+                        as="textarea"
+                        rows={2}
+                        style = {{width:"60%", resize:"none"}}
+                        className="my-3"
+                        placeholder = "Add new task's description"
+                        name = "description"
+                        value = {description}
+                        onChange = {this.hendleChange}
+                        disabled = {disabled}
+                    />
+
+                    <div>
+                        <Button
+                            className="d-block"
+                            variant = "primary"
+                            onClick = {handleS}
+                            disabled = {!(!!title && !!description)}
+                        >Add
+                        </Button>
+                    </div>
                 </div>               
             </div>
         )
