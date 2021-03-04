@@ -124,10 +124,20 @@ class ToDo extends React.Component {
 
     showHideEdit = (task) => {
         let show = !this.state.show
-        this.setState ({
-            changable: task,
-            show
-        });
+
+        if (show) {
+            this.setState ({
+                changable: task,
+                show
+            });
+        }
+
+        else {
+            this.setState ({
+                changable: null,
+                show
+            });
+        };
     }
 
     edit = (changedTask) => {
