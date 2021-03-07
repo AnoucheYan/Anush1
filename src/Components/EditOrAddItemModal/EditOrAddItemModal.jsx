@@ -2,21 +2,56 @@ import React from 'react';
 import {Form, Modal, Button} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-class EditTaskModal extends React.Component{
+class EditOrAddItemModal extends React.Component{
     constructor (props) {
         super(props);
-        this.state = {
-            ...props.changable
+
+        this.inputRef = React.createRef()
+
+        const {action} = this.props;
+
+        if (action === "edit") {
+            this.state = {
+                ...props.changable,                
+            }
         }
+        else if(action === "add") {
+            this.state = {
+                title: '',
+                description:''
+            }
+        };
+
     }
 
     handleS = ({type, key}) => {
-        if(type === 'keypress' && key !== 'Enter') return;
+        const {title, description} = this.state;
+        
+        if((type === 'keypress' && key !== 'Enter') || !(!!title || !!description)) return;
 
-        const {onSubmit, onHide} = this.props;
+        const {editSubmit, onHide, addSubmit, action} = this.props;
 
-        onSubmit (this.state);
+        if (action === "add") {
+
+            const dataObj = {
+                title,
+                description
+            }
+
+            addSubmit (dataObj);
+        }
+        else if (action === "edit") {
+            editSubmit (this.state);
+        }
+
         onHide ();
+    }
+
+    componentDidMount () {
+        
+        if (this.props.action === "add") {
+            this.inputRef.current.focus();
+        }
     }
 
     hendleChange = (event) => {
@@ -27,7 +62,7 @@ class EditTaskModal extends React.Component{
     }
 
     render () {
-        const {onHide} = this.props;
+        const {onHide, modalHeading, buttonText} = this.props;
         const {title, description} = this.state;
         return (
             <Modal
@@ -39,13 +74,14 @@ class EditTaskModal extends React.Component{
             >
                 <Modal.Header closeButton>
                     <Modal.Title id = "contained-modal-title-vcenter">
-                        Make your adjustments!!!
+                        {modalHeading}
                     </Modal.Title>
                 </Modal.Header>
                 
                 <Modal.Body className="d-flex flex-column align-items-center">
                     <Form.Control
                         type = "text"
+                        placeholder = "Add new item's title"
                         onChange = {this.hendleChange}
                         value = {title}
                         onKeyPress = {this.handleS}
@@ -59,6 +95,7 @@ class EditTaskModal extends React.Component{
                         rows={2}
                         style = {{width:"60%", resize:"none"}}
                         className="my-3"
+                        placeholder = "Add new item's description"
                         name = "description"
                         value = {description}
                         onChange = {this.hendleChange}
@@ -66,23 +103,37 @@ class EditTaskModal extends React.Component{
                 </Modal.Body>
                 
                 <Modal.Footer>
-                    <Button onClick = {this.handleS}>Save changes</Button>
-                    <Button onClick = {onHide}>Close</Button>
+                    <Button 
+                        onClick = {this.handleS}
+                        disabled = {!(!!title && !!description)}
+                    >
+                        {buttonText}
+                    </Button>
+                    <Button
+                        onClick = {onHide}
+                    >
+                        Close
+                    </Button>
                 </Modal.Footer>
             </Modal>
         );
     }
 }
 
-EditTaskModal.propTypes = {
+EditOrAddItemModal.propTypes = {
     onHide: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    editSubmit: PropTypes.func.isRequired,
+    addSubmit: PropTypes.func.isRequired,
     changable: PropTypes.shape({
         _id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired
     }),
+    modalHeading: PropTypes.string,
+    buttonText: PropTypes.string,
+    action: PropTypes.string,
+    myClick: PropTypes.func.isRequired
 }
 
 
-export default EditTaskModal;
+export default EditOrAddItemModal;

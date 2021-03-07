@@ -12,7 +12,7 @@ const Task = ({
     setRemoveTaskId,
     disabled,
     checked,
-    showHideEdit
+    myClick
 }) => {
     
     return(
@@ -52,8 +52,9 @@ const Task = ({
                 <Button
                     variant = "warning"
                     className = "ml-3"
-                    onClick = { () => showHideEdit(task)}
+                    onClick = {(e) =>  myClick(e, task)}
                     disabled = {disabled}
+                    name = "editTask"
                 >
                     <FontAwesomeIcon icon = {faPenAlt} />
                 </Button>
@@ -71,8 +72,8 @@ Task.propTypes = {
     handleDelTask: PropTypes.func.isRequired,
     setRemoveTaskId: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
-    checked: PropTypes.bool.isRequired,
-    showHideEdit: PropTypes.func.isRequired
+    checked: PropTypes.bool.isRequired,    
+    myClick: PropTypes.func.isRequired
 }
 
 export default memo(Task);

@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
-import AddNewTask from '../AddTask/AddNewTask';
 import Task from '../Task/Task';
 import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import idGenerator from '../../helpers/idGenerator';
-import Conf from '../Conf/Conf';
-import EditTaskModal from'../EditTaskModal/EditTaskModal';
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import EditOrAddItemModal from'../EditOrAddItemModal/EditOrAddItemModal';
 
 class ToDo extends React.Component {
     state = {
@@ -30,10 +29,13 @@ class ToDo extends React.Component {
         isAllChecked: false,
         confirmRemoving: false,
         changable: null,
-        show: false
+        show: false,
+        modalHeading: "",
+        buttonText: "",
+        action: ""
     }
 
-    handleSubmit = (dataObj) => {
+    addSubmit = (dataObj) => {
         if(!dataObj.title || !dataObj.description) return;
         const tasks = [...this.state.tasks];
         tasks.push (
@@ -110,37 +112,17 @@ class ToDo extends React.Component {
         });
     }
 
-    // setEditTask = (task) => { //
-    //     this.setState({
-    //         changable: task
-    //     });
-    // }
-
-    // changableNull = () => { //
-    //     this.setState({
-    //         changable: null
-    //     });
-    // }
-
-    showHideEdit = (task) => {
-        let show = !this.state.show
-
-        if (show) {
-            this.setState ({
-                changable: task,
-                show
-            });
-        }
-
-        else {
-            this.setState ({
-                changable: null,
-                show
-            });
-        };
+    
+    hidingModal = () => {
+        this.setState({
+            show: false,
+            modalHeading: "",
+            buttonText: "",
+            action: ""
+        });
     }
 
-    edit = (changedTask) => {
+    editSubmit = (changedTask) => {
         const tasks = [...this.state.tasks];
         const index = tasks.findIndex(task => task._id === changedTask._id);
         tasks[index] = changedTask;
@@ -150,8 +132,33 @@ class ToDo extends React.Component {
         });
     }
 
+    myClick = (e,task) => {
+
+        const {name} = e.target;
+
+        if (name === "editTask"){
+            let show = !this.state.show
+            this.setState({
+                action: "edit",
+                modalHeading: "Make your adjustments!!!",
+                buttonText: "Save changes",
+                show,
+                changable: task
+            });
+        }
+        else if (name === "AddNewItem") {
+            this.setState({
+                action: "add",
+                modalHeading: "Add new item!!!",
+                buttonText: "Add item",
+                show: !this.state.show,
+            });
+        }
+
+    }
+
     render () {
-        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, show} = this.state;
+        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, show, modalHeading, buttonText, action} = this.state;
         const Tasks = tasks.map(task => {
             return (
                 <Col key = {task._id} 
@@ -163,7 +170,7 @@ class ToDo extends React.Component {
                         setRemoveTaskId = {this.setRemoveTaskId}
                         disabled = {!!removeTasks.size} 
                         checked = {removeTasks.has(task._id)}
-                        showHideEdit = {this.showHideEdit}
+                        myClick = {this.myClick}
                     />
                 </Col>
             )
@@ -177,10 +184,13 @@ class ToDo extends React.Component {
                         <Row className="justify-content-center mt-4">
                             <Col>
                                 <h1 className = {styles.heading}>Seasons</h1>
-                                <AddNewTask 
-                                    handleSubmit = {this.handleSubmit} 
-                                    disabled = {!!removeTasks.size}
-                                />
+                                <Button 
+                                    variant="primary"
+                                    name="AddNewItem"
+                                    onClick={this.myClick}
+                                >
+                                    Add item
+                                </Button>
                             </Col>
                         </Row>
 
@@ -212,18 +222,23 @@ class ToDo extends React.Component {
 
                     </Container>
 
-                    {confirmRemoving && <Conf 
+                    {confirmRemoving && <ConfirmationModal
                         onHide = {this.showHideModal}
                         onSubmit = {this.deleteTasks}
                         modalMessage = {`Can I delete ${removeTasks.size} item???`}
                     />}
 
-                    {show && <EditTaskModal
+                    {show && <EditOrAddItemModal
                         changable = {changable}
-                        onHide = {this.showHideEdit}
-                        onSubmit = {this.edit}
+                        buttonText = {buttonText}
+                        modalHeading = {modalHeading}
+                        onHide = {this.hidingModal}
+                        editSubmit = {this.editSubmit}
+                        addSubmit = {this.addSubmit}
+                        myClick = {this.myClick}
+                        action = {action}
                     />}
-                    
+                  
                 </div>
             </Fragment>
         )
