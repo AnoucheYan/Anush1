@@ -11,7 +11,9 @@ class EditTaskModal extends React.Component{
     }
 
     handleS = ({type, key}) => {
-        if(type === 'keypress' && key !== 'Enter') return;
+        const {title, description} = this.state;
+        
+        if((type === 'keypress' && key !== 'Enter') || !(!!title || !!description)) return;
 
         const {onSubmit, onHide} = this.props;
 
@@ -46,6 +48,7 @@ class EditTaskModal extends React.Component{
                 <Modal.Body className="d-flex flex-column align-items-center">
                     <Form.Control
                         type = "text"
+                        placeholder = "Add new task's title"
                         onChange = {this.hendleChange}
                         value = {title}
                         onKeyPress = {this.handleS}
@@ -59,6 +62,7 @@ class EditTaskModal extends React.Component{
                         rows={2}
                         style = {{width:"60%", resize:"none"}}
                         className="my-3"
+                        placeholder = "Add new task's description"
                         name = "description"
                         value = {description}
                         onChange = {this.hendleChange}
@@ -66,7 +70,12 @@ class EditTaskModal extends React.Component{
                 </Modal.Body>
                 
                 <Modal.Footer>
-                    <Button onClick = {this.handleS}>Save changes</Button>
+                    <Button 
+                        onClick = {this.handleS}
+                        disabled = {!(!!title && !!description)}
+                    >
+                        Save changes
+                    </Button>
                     <Button onClick = {onHide}>Close</Button>
                 </Modal.Footer>
             </Modal>

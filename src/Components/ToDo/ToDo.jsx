@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import AddNewTask from '../AddTask/AddNewTask';
+import AddNewTaskModal from '../AddNewTaskModal/AddNewTaskModal';
 import Task from '../Task/Task';
 import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
@@ -30,7 +30,8 @@ class ToDo extends React.Component {
         isAllChecked: false,
         confirmRemoving: false,
         changable: null,
-        show: false
+        show: false,
+        showHide: false
     }
 
     handleSubmit = (dataObj) => {
@@ -140,6 +141,12 @@ class ToDo extends React.Component {
         };
     }
 
+    openCloseAddTaskModal = () => {
+        this.setState({
+            showHide: !this.state.showHide
+        });
+    }
+
     edit = (changedTask) => {
         const tasks = [...this.state.tasks];
         const index = tasks.findIndex(task => task._id === changedTask._id);
@@ -151,7 +158,7 @@ class ToDo extends React.Component {
     }
 
     render () {
-        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, show} = this.state;
+        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, show, showHide} = this.state;
         const Tasks = tasks.map(task => {
             return (
                 <Col key = {task._id} 
@@ -177,10 +184,16 @@ class ToDo extends React.Component {
                         <Row className="justify-content-center mt-4">
                             <Col>
                                 <h1 className = {styles.heading}>Seasons</h1>
-                                <AddNewTask 
+                                {/* <AddNewTaskModal 
                                     handleSubmit = {this.handleSubmit} 
                                     disabled = {!!removeTasks.size}
-                                />
+                                /> */}
+                                <Button 
+                                    variant="primary"
+                                    onClick={this.openCloseAddTaskModal}
+                                >
+                                    Add item
+                                </Button>
                             </Col>
                         </Row>
 
@@ -223,6 +236,13 @@ class ToDo extends React.Component {
                         onHide = {this.showHideEdit}
                         onSubmit = {this.edit}
                     />}
+
+                    {showHide && <AddNewTaskModal 
+                        onHide = {this.openCloseAddTaskModal}
+                        handleSubmit = {this.handleSubmit} 
+                        disabled = {!!removeTasks.size}
+                    />
+                    }
                     
                 </div>
             </Fragment>
