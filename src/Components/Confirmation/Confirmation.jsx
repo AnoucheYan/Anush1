@@ -1,7 +1,7 @@
 import {Modal, Button} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const Conf = (props) => {
+const Confirmation = (props) => {
 
     const {onHide, onSubmit, modalMessage} = props;
 
@@ -31,11 +31,11 @@ const Conf = (props) => {
 };
 
 
-Conf.propTypes = {
+Confirmation.propTypes = {
     onHide: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     modalMessage: PropTypes.string.isRequired
 }
 
 
-export default Conf;
+export default Confirmation;

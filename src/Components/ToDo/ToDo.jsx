@@ -1,61 +1,68 @@
 import React, { Fragment } from 'react';
-import AddNewTaskModal from '../AddNewTaskModal/AddNewTaskModal';
+import AddOrEditTaskModal from '../AddOrEditTaskModal/AddOrEditTaskModal';
 import Task from '../Task/Task';
 import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import idGenerator from '../../helpers/idGenerator';
-import Conf from '../Conf/Conf';
-import EditTaskModal from'../EditTaskModal/EditTaskModal';
+import Confirmation from '../Confirmation/Confirmation';
+import isoDate from '../../helpers/IsoDate';
+
 
 class ToDo extends React.Component {
     state = {
-        tasks :[
-            {
-                _id: idGenerator(),
-                title: 'Spring',
-                description: 'During springtime, the daylight hours become longer, the sun shines a little stronger, and flowers begin to bloom!'
-            },
-            {
-                _id: idGenerator(),
-                title: 'Summer',
-                description: 'Summertime’s the hottest season of the year! The days are longer and the sun shines brightly in a clear sky.'
-            },
-            {
-                _id: idGenerator(),
-                title: 'Autumn',
-                description: 'The days become shorter, leaves start to fall from the trees, and piles of leaves rest on the ground. Also, the temperatures start dropping and it gets a little bit colder every day.'
-            },
-        ],
+        tasks :[],
         removeTasks: new Set(),
         isAllChecked: false,
         confirmRemoving: false,
         changable: null,
-        show: false,
-        showHide: false
+        showHideAddOrEdit: false
     }
 
     handleSubmit = (dataObj) => {
         if(!dataObj.title || !dataObj.description) return;
+        dataObj.date = isoDate(dataObj.date);
         const tasks = [...this.state.tasks];
-        tasks.push (
-            {
-                _id: idGenerator(),
-                title: dataObj.title,
-                description: dataObj.description
+
+        fetch("http://localhost:3001/task",{
+            method: "POST",
+            body: JSON.stringify(dataObj),
+            headers: {
+                "Content-Type": "application/json"
             }
-        );
-        this.setState ({
-            tasks
-        });
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.error) {
+                throw data.error;
+            }
+            tasks.push(data);
+            this.setState ({
+                tasks
+            });
+        })
+        .catch(error => {
+            console.log("error: ",error);
+        });    
     }
 
     handleDelTask = (id) => {
-        let tasks = [...this.state.tasks];
+        fetch("http://localhost:3001/task/"+id,{
+            method: "DELETE"
+        })
+        .then(res => res.json())
+        .then(data =>{
+            if(data.error){
+                throw data.error
+            }
+            let tasks = [...this.state.tasks];
 
-        tasks = tasks.filter(item => item._id !== id);
-
-        this.setState({
-            tasks
+            tasks = tasks.filter(item => item._id !== id);
+    
+            this.setState({
+                tasks
+            });            
+        })
+        .catch(error => {
+            console.log("error: ",error);
         });
     }
 
@@ -75,6 +82,33 @@ class ToDo extends React.Component {
     }
 
     deleteTasks = () => {
+        fetch("http://localhost:3001/task",{
+            method: "PATCH",
+            body: JSON.stringify({tasks:Array.from(this.state.removeTasks)}),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.error) {
+                throw data.error
+            }
+            let tasks = [...this.state.tasks];
+        
+            let removeTasks = new Set (this.state.removeTasks)          
+            tasks = tasks.filter(item => !removeTasks.has(item._id))
+    
+            this.setState ({
+                tasks,
+                removeTasks: new Set (),
+                isAllChecked: false
+            });
+        })
+        .catch(error => {
+            console.log("error: ",error);
+        })
+
         let tasks = [...this.state.tasks];
         
         let removeTasks = new Set (this.state.removeTasks)          
@@ -111,54 +145,67 @@ class ToDo extends React.Component {
         });
     }
 
-    // setEditTask = (task) => { //
-    //     this.setState({
-    //         changable: task
-    //     });
-    // }
-
-    // changableNull = () => { //
-    //     this.setState({
-    //         changable: null
-    //     });
-    // }
-
-    showHideEdit = (task) => {
-        let show = !this.state.show
-
-        if (show) {
-            this.setState ({
-                changable: task,
-                show
-            });
-        }
-
-        else {
-            this.setState ({
-                changable: null,
-                show
-            });
-        };
+    changableTask = (task) => {
+        this.setState({
+            changable: task
+        });
+    }
+    changableNull = () => {
+        this.setState({
+            changable: null
+        });
     }
 
     openCloseAddTaskModal = () => {
         this.setState({
-            showHide: !this.state.showHide
+            showHideAddOrEdit: !this.state.showHideAddOrEdit
         });
     }
 
     edit = (changedTask) => {
-        const tasks = [...this.state.tasks];
-        const index = tasks.findIndex(task => task._id === changedTask._id);
-        tasks[index] = changedTask;
+        fetch("http://localhost:3001/task/" + changedTask._id, {
+            method: "PUT",
+            body: JSON.stringify(changedTask),
+            headers: {
+                "Content-Type":"application/json"
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.error) {
+                throw data.error
+            }
+            const tasks = [...this.state.tasks];
+            const index = tasks.findIndex(task => task._id === data._id);
+            tasks[index] = data;
+    
+            this.setState({
+                tasks
+            });
+        })
+        .catch(error =>{
+            console.log("error: ",error);
+        })
+    }
 
-        this.setState({
-            tasks
+    componentDidMount () {
+        fetch("http://localhost:3001/task")
+        .then(response => response.json())
+        .then(data => {
+            if(data.error){
+                throw data.error
+            }
+            this.setState({
+                tasks:data
+            })
+        })
+        .catch(error => {
+            console.error(error);
         });
     }
 
     render () {
-        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, show, showHide} = this.state;
+        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, showHideAddOrEdit} = this.state;
         const Tasks = tasks.map(task => {
             return (
                 <Col key = {task._id} 
@@ -170,7 +217,7 @@ class ToDo extends React.Component {
                         setRemoveTaskId = {this.setRemoveTaskId}
                         disabled = {!!removeTasks.size} 
                         checked = {removeTasks.has(task._id)}
-                        showHideEdit = {this.showHideEdit}
+                        changableTask = {this.changableTask}
                     />
                 </Col>
             )
@@ -183,22 +230,18 @@ class ToDo extends React.Component {
 
                         <Row className="justify-content-center mt-4">
                             <Col>
-                                <h1 className = {styles.heading}>Seasons</h1>
-                                {/* <AddNewTaskModal 
-                                    handleSubmit = {this.handleSubmit} 
-                                    disabled = {!!removeTasks.size}
-                                /> */}
+                                <h1 className = {styles.heading}>To Do</h1>
                                 <Button 
                                     variant="primary"
                                     onClick={this.openCloseAddTaskModal}
                                 >
-                                    Add item
+                                    Add task
                                 </Button>
                             </Col>
                         </Row>
 
                         <Row className="justify-content-center mt-4">
-                            {!tasks.length && <div>You have deleted all seasons. You can add seasons again.</div>}
+                            {!tasks.length && <div>You have deleted all tasks. You can add tasks again.</div>}
                             {Tasks}
                         </Row>
 
@@ -225,22 +268,22 @@ class ToDo extends React.Component {
 
                     </Container>
 
-                    {confirmRemoving && <Conf 
+                    {confirmRemoving && <Confirmation
                         onHide = {this.showHideModal}
                         onSubmit = {this.deleteTasks}
-                        modalMessage = {`Can I delete ${removeTasks.size} item???`}
+                        modalMessage = {`Can I delete ${removeTasks.size} task???`}
                     />}
 
-                    {show && <EditTaskModal
+                    {changable  && <AddOrEditTaskModal 
                         changable = {changable}
-                        onHide = {this.showHideEdit}
+                        onHide = {this.changableNull}
                         onSubmit = {this.edit}
                     />}
 
-                    {showHide && <AddNewTaskModal 
-                        onHide = {this.openCloseAddTaskModal}
-                        handleSubmit = {this.handleSubmit} 
+                    {showHideAddOrEdit && <AddOrEditTaskModal 
                         disabled = {!!removeTasks.size}
+                        onHide = {this.openCloseAddTaskModal}
+                        onSubmit = {this.handleSubmit}
                     />
                     }
                     

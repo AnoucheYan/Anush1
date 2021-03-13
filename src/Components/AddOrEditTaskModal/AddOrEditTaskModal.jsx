@@ -1,18 +1,22 @@
 import React from 'react';
 import {Button, Form, Modal} from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import DatePicker from "react-datepicker";
+import isoDate from '../../helpers/IsoDate';
 
 
-class AddNewTaskModal extends React.Component {
+class AddOrEditTaskModal extends React.Component {
 
     constructor (props) {
         super(props);
 
-        this.inputRef = React.createRef()
+        this.inputRef = React.createRef();
 
         this.state = {
-            title: '',
-            description:''
+            ...props.changable,
+            title: props.changable?props.changable.title:'',
+            description: props.changable?props.changable.description:'',
+            date: props.changable? new Date(props.changable.date): new Date()   
         }
     }
         
@@ -27,21 +31,27 @@ class AddNewTaskModal extends React.Component {
         this.inputRef.current.focus();
     }
 
-    render () {
+    handleS = ({key, type}) => {
         const {title, description} = this.state;
-        const {handleSubmit, onHide} = this.props;
+        const {onSubmit, onHide} = this.props;
+        if((type === 'keypress' && key !== 'Enter') || !(!!title || !!description) ) return;
 
-        const handleS = ({key, type}) => {
-            if((type === 'keypress' && key !== 'Enter') || !(!!title || !!description) ) return;
+        const dataObj = {...this.state};
+        dataObj.date = isoDate(dataObj.date)
 
-            const dataObj = {
-                title,
-                description
-            }
+        onSubmit (dataObj);
+        onHide ();
+    }
 
-            handleSubmit (dataObj);
-            onHide ();
-        }
+    setDate = (date) => {
+        this.setState({
+            date
+        });
+    }
+
+    render () {
+        const {title, description, date} = this.state;
+        const {onHide, changable} = this.props;
     
         return (
             <div>
@@ -54,14 +64,14 @@ class AddNewTaskModal extends React.Component {
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id = "contained-modal-title-vcenter">
-                            Add new item!!!
+                            {changable?"Make Your adjustments":"Add new task!!!"}
                         </Modal.Title>
                     </Modal.Header>
                 
                     <Modal.Body className="d-flex flex-column align-items-center">
                         <Form.Control
                             type = "text"
-                            placeholder = "Add new task's title"
+                            placeholder = "Title"
                             onChange = {this.hendleChange}
                             value = {title}
                             onKeyPress = {this.handleS}
@@ -75,18 +85,22 @@ class AddNewTaskModal extends React.Component {
                             rows={2}
                             style = {{width:"60%", resize:"none"}}
                             className="my-3"
-                            placeholder = "Add new task's description"
+                            placeholder = "Description"
                             name = "description"
                             value = {description}
                             onChange = {this.hendleChange}
                         />
+                        <DatePicker
+                            selected={date} 
+                            onChange={date => this.setDate(date)}
+                        />
                     </Modal.Body>
                 
                     <Modal.Footer>
-                        <Button onClick = {handleS}
+                        <Button onClick = {this.handleS}
                             disabled = {!(!!title && !!description)}
                         >
-                            Add item
+                            {changable?"Save changes":"Add task"}
                         </Button>
                         <Button onClick = {onHide}>Close</Button>
                     
@@ -97,10 +111,11 @@ class AddNewTaskModal extends React.Component {
     }
 }
 
-AddNewTaskModal.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired,
-    onHide: PropTypes.func.isRequired
+AddOrEditTaskModal.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    onHide: PropTypes.func.isRequired,
+    changable: PropTypes.object
 }
         
-export default AddNewTaskModal;
+export default AddOrEditTaskModal;

@@ -4,6 +4,7 @@ import {Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenAlt } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+import isoDate from '../../helpers/IsoDate';
 
 
 const Task = ({
@@ -12,7 +13,7 @@ const Task = ({
     setRemoveTaskId,
     disabled,
     checked,
-    showHideEdit
+    changableTask
 }) => {
     
     return(
@@ -39,11 +40,23 @@ const Task = ({
                     {task.description}
                 </p>
             </div>
+
+            <div>
+                <p className = {styles.parMargin}> 
+                    Dadline: {isoDate(task.date)}
+                </p>
+            </div>
+
+            <div>
+                <p className = {styles.parMargin}> 
+                    Created at: {isoDate(task.created_at)}
+                </p>
+            </div>
             
             <div className = "mt-3">
                 <Button
                     variant = "danger"
-                    onClick = { () => handleDelTask(task._id) }
+                    onClick = {() => handleDelTask(task._id)}
                     disabled = {disabled}
                 >
                     <FontAwesomeIcon icon = {faTrash} />
@@ -52,7 +65,7 @@ const Task = ({
                 <Button
                     variant = "warning"
                     className = "ml-3"
-                    onClick = { () => showHideEdit(task)}
+                    onClick = {() => changableTask(task)}
                     disabled = {disabled}
                 >
                     <FontAwesomeIcon icon = {faPenAlt} />
@@ -72,7 +85,7 @@ Task.propTypes = {
     setRemoveTaskId: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     checked: PropTypes.bool.isRequired,
-    showHideEdit: PropTypes.func.isRequired
+    changableTask: PropTypes.func
 }
 
 export default memo(Task);
