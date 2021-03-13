@@ -6,10 +6,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "react-datepicker/dist/react-datepicker.css";
+import {BrowserRouter} from 'react-router-dom'; // I can import Router and use it instead of BrowserRowter, but Rowter don't save history
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

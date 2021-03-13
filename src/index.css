@@ -52,3 +52,17 @@ code {
 *{
   box-sizing: border-box;
 }
+
+.nav-item{
+  padding: 15px 20px;
+}
+
+a{
+  color: palevioletred;
+  font-weight: bold;
+}
+
+a:hover{
+  text-decoration: none;
+  color: palevioletred;
+}

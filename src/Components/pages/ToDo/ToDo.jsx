@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
-import AddOrEditTaskModal from '../AddOrEditTaskModal/AddOrEditTaskModal';
-import Task from '../Task/Task';
+import AddOrEditTaskModal from '../../AddOrEditTaskModal/AddOrEditTaskModal';
+import Task from '../../Task/Task';
 import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import Confirmation from '../Confirmation/Confirmation';
-import isoDate from '../../helpers/IsoDate';
+import Confirmation from '../../Confirmation/Confirmation';
+import isoDate from '../../../helpers/IsoDate';
 
 
 class ToDo extends React.Component {

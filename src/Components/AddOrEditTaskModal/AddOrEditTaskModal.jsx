@@ -34,8 +34,9 @@ class AddOrEditTaskModal extends React.Component {
     handleS = ({key, type}) => {
         const {title, description} = this.state;
         const {onSubmit, onHide} = this.props;
+        console.log(type,key);
         if((type === 'keypress' && key !== 'Enter') || !(!!title || !!description) ) return;
-
+        
         const dataObj = {...this.state};
         dataObj.date = isoDate(dataObj.date)
 
@@ -89,6 +90,7 @@ class AddOrEditTaskModal extends React.Component {
                             name = "description"
                             value = {description}
                             onChange = {this.hendleChange}
+                            onKeyPress = {this.handleS}
                         />
                         <DatePicker
                             selected={date} 
