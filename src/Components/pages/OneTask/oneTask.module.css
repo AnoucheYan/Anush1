@@ -1,0 +1,22 @@
+.oneTaskContainer{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.oneTask{
+    color: palevioletred;
+    background-color: rgba(218, 134, 162, .5);
+    width: 50%;
+    box-shadow: 5px 5px 20px palevioletred;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.date{
+    font-weight: bold;
+    font-style: italic;
+}

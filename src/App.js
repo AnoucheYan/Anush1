@@ -4,6 +4,8 @@ import About from './Components/pages/About/About';
 import Contact from './Components/pages/Contact/Contact';
 import NavigationMenu from './Components/NavigationMenu/NavigationMenu';
 import {Route, Switch, Redirect} from 'react-router-dom';
+import NotFound from './Components/pages/NotFound/NotFound';
+import OneTask from './Components/pages/OneTask/OneTask';
 
 
 function App() {
@@ -13,14 +15,12 @@ function App() {
     <div className="App">
       <NavigationMenu />
       <Switch>
-        <Route path="/" render={()=><ToDo />} exact /> {/* or <Route path="/" component={ToDo} exact />  (in this way we can't pass props to Todo) */}
-        <Route path="/about" render={()=><About />} exact />
-        <Route path="/contact" render={()=><Contact />} exact />        
-        {/* or 
-        <Route path="/" exact>
-          <ToDo />
-        </Route> */}
-        <Redirect to="/" />
+        <Route path="/" component={ToDo} exact />
+        <Route path="/about" component={About} exact />
+        <Route path="/contact" component={Contact} exact />
+        <Route path="/onetask/:id" component={OneTask} exact />    
+        <Route path="/404" component={NotFound} exact />   {/* or without Redirect, path="/*" */}
+        <Redirect to="/404" />
       </Switch>
     </div>
   )

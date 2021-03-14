@@ -1,0 +1,12 @@
+.notFoundPage {
+    color: palevioletred;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+.myImg {
+    width: 60vw;
+    height: 80vh;
+}

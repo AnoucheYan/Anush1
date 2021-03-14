@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenAlt } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import isoDate from '../../helpers/IsoDate';
+import {Link} from 'react-router-dom';
 
 
 const Task = ({
@@ -29,9 +30,11 @@ const Task = ({
                 </div>
 
                 <div>
-                    <p className = {styles.titleStyle}> 
-                        {task.title}
-                    </p>
+                    <Link to={`/onetask/${task._id}`}>
+                        <p className = {styles.titleStyle}> 
+                            {task.title}
+                        </p>
+                    </Link>
                 </div>
             </div>
 
