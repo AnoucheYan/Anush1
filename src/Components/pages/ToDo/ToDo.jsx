@@ -5,6 +5,7 @@ import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Confirmation from '../../Confirmation/Confirmation';
 import isoDate from '../../../helpers/IsoDate';
+import Loading from '../../Loading/Loading';
 
 
 class ToDo extends React.Component {
@@ -14,13 +15,19 @@ class ToDo extends React.Component {
         isAllChecked: false,
         confirmRemoving: false,
         changable: null,
-        showHideAddOrEdit: false
+        showHideAddOrEdit: false,
+        loading: false
     }
 
     handleSubmit = (dataObj) => {
         if(!dataObj.title || !dataObj.description) return;
         dataObj.date = isoDate(dataObj.date);
-        const tasks = [...this.state.tasks];
+
+        this.setState({
+            loading:true
+        });
+
+        const tasks = [...this.state.tasks];      
 
         fetch("http://localhost:3001/task",{
             method: "POST",
@@ -35,16 +42,25 @@ class ToDo extends React.Component {
                 throw data.error;
             }
             tasks.push(data);
+            this.state.showHideAddOrEdit && this.openCloseAddTaskModal();
             this.setState ({
                 tasks
             });
         })
         .catch(error => {
             console.log("error: ",error);
-        });    
+        })
+        .finally(() => {
+            this.setState({
+                loading:false
+            });
+        });
     }
 
     handleDelTask = (id) => {
+        this.setState({
+            loading:true
+        });
         fetch("http://localhost:3001/task/"+id,{
             method: "DELETE"
         })
@@ -63,6 +79,11 @@ class ToDo extends React.Component {
         })
         .catch(error => {
             console.log("error: ",error);
+        })
+        .finally(() => {
+            this.setState({
+                loading:false
+            });
         });
     }
 
@@ -82,6 +103,10 @@ class ToDo extends React.Component {
     }
 
     deleteTasks = () => {
+        this.setState({
+            loading:true
+        });
+
         fetch("http://localhost:3001/task",{
             method: "PATCH",
             body: JSON.stringify({tasks:Array.from(this.state.removeTasks)}),
@@ -108,16 +133,10 @@ class ToDo extends React.Component {
         .catch(error => {
             console.log("error: ",error);
         })
-
-        let tasks = [...this.state.tasks];
-        
-        let removeTasks = new Set (this.state.removeTasks)          
-        tasks = tasks.filter(item => !removeTasks.has(item._id))
-
-        this.setState ({
-            tasks,
-            removeTasks: new Set (),
-            isAllChecked: false
+        .finally(() => {
+            this.setState({
+                loading:false
+            });
         });
     }
 
@@ -163,6 +182,10 @@ class ToDo extends React.Component {
     }
 
     edit = (changedTask) => {
+        this.setState({
+            loading:true
+        });
+
         fetch("http://localhost:3001/task/" + changedTask._id, {
             method: "PUT",
             body: JSON.stringify(changedTask),
@@ -178,17 +201,26 @@ class ToDo extends React.Component {
             const tasks = [...this.state.tasks];
             const index = tasks.findIndex(task => task._id === data._id);
             tasks[index] = data;
-    
+            this.state.changable && this.changableNull();
             this.setState({
-                tasks
+                tasks,
             });
         })
         .catch(error =>{
             console.log("error: ",error);
         })
+        .finally(() => {
+            this.setState({
+                loading:false
+            });
+        });
     }
 
     componentDidMount () {
+        this.setState({
+            loading: true
+        })
+
         fetch("http://localhost:3001/task")
         .then(response => response.json())
         .then(data => {
@@ -196,16 +228,22 @@ class ToDo extends React.Component {
                 throw data.error
             }
             this.setState({
-                tasks:data
-            })
+                tasks: data
+            });
         })
         .catch(error => {
             console.error(error);
+        })
+        .finally(() => {
+            this.setState ({
+                loading: false
+            });
         });
     }
 
     render () {
-        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, showHideAddOrEdit} = this.state;
+        const {removeTasks, tasks, isAllChecked, confirmRemoving, changable, showHideAddOrEdit, loading} = this.state;
+
         const Tasks = tasks.map(task => {
             return (
                 <Col key = {task._id} 
@@ -268,23 +306,32 @@ class ToDo extends React.Component {
 
                     </Container>
 
-                    {confirmRemoving && <Confirmation
-                        onHide = {this.showHideModal}
-                        onSubmit = {this.deleteTasks}
-                        modalMessage = {`Can I delete ${removeTasks.size} task???`}
-                    />}
+                    {
+                        confirmRemoving && <Confirmation
+                            onHide = {this.showHideModal}
+                            onSubmit = {this.deleteTasks}
+                            modalMessage = {`Can I delete ${removeTasks.size} task???`}
+                        />
+                    }
 
-                    {changable  && <AddOrEditTaskModal 
-                        changable = {changable}
-                        onHide = {this.changableNull}
-                        onSubmit = {this.edit}
-                    />}
+                    {
+                        changable  && <AddOrEditTaskModal 
+                            changable = {changable}
+                            onHide = {this.changableNull}
+                            onSubmit = {this.edit}
+                        />
+                    }
 
-                    {showHideAddOrEdit && <AddOrEditTaskModal 
-                        disabled = {!!removeTasks.size}
-                        onHide = {this.openCloseAddTaskModal}
-                        onSubmit = {this.handleSubmit}
-                    />
+                    {
+                    showHideAddOrEdit && <AddOrEditTaskModal 
+                            disabled = {!!removeTasks.size}
+                            onHide = {this.openCloseAddTaskModal}
+                            onSubmit = {this.handleSubmit}
+                        />
+                    }
+
+                    {
+                        loading && <Loading />
                     }
                     
                 </div>

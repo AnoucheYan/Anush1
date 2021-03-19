@@ -1,24 +1,38 @@
 import {Nav} from 'react-bootstrap';
-import {NavLink} from 'react-router-dom'; // I can import Link and use it instead of NavLink, but link don't have activeStyle property
+import {NavLink} from 'react-router-dom';
 import styles from './navigationMenu.module.css';
 
 
+const menuItems = [
+    {
+        to: "/",
+        value: "Home"
+    },
+    {
+        to: "/about",
+        value: "About"
+    },
+    {
+        to: "/contact",
+        value: "Contact"
+    }
+]
+
 const NavigationMenu = () => {
+    const items = menuItems.map((item, idx) => {
+        return (
+            <Nav.Item key = {idx}>
+                <NavLink to = {item.to} activeClassName = {styles.activeItem} exact>
+                    {item.value}
+                </NavLink>
+            </Nav.Item>
+        );
+    })
     return (
-
         <Nav activeKey="/home">
-            <Nav.Item>
-                <NavLink to = "/" activeClassName = {styles.activeItem} exact>HOME</NavLink>
-            </Nav.Item>
-            <Nav.Item>
-                <NavLink to = "/about" activeClassName = {styles.activeItem} exact>ABOUT</NavLink>
-            </Nav.Item>
-            <Nav.Item>
-                <NavLink to = "/contact" activeClassName = {styles.activeItem} exact>CONTACT</NavLink>
-            </Nav.Item>
+            {items}
         </Nav>
-    )
+    );
 }
-
 
 export default NavigationMenu;

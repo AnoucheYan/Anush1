@@ -8,18 +8,44 @@ import NotFound from './Components/pages/NotFound/NotFound';
 import OneTask from './Components/pages/OneTask/OneTask';
 
 
-function App() {
-    
+
   
+  const pages = [
+    {
+      path: "/",
+      component: ToDo
+    },
+    {
+      path: "/about",
+      component: About
+    },
+    {
+      path: "/contact",
+      component: Contact
+    },
+    {
+      path: "/onetask/:id",
+      component: OneTask
+    },
+    {
+      path: "/404",
+      component: NotFound
+    }
+  ]
+  
+function App () {
+
+  const myPages = pages.map((page, idx) => {
+      return (
+        <Route key = {idx} path = {page.path} component = {page.component} exact />
+      )
+  })
+
   return (
     <div className="App">
       <NavigationMenu />
       <Switch>
-        <Route path="/" component={ToDo} exact />
-        <Route path="/about" component={About} exact />
-        <Route path="/contact" component={Contact} exact />
-        <Route path="/onetask/:id" component={OneTask} exact />    
-        <Route path="/404" component={NotFound} exact />   {/* or without Redirect, path="/*" */}
+        {myPages}
         <Redirect to="/404" />
       </Switch>
     </div>

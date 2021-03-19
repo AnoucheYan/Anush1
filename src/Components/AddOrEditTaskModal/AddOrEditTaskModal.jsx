@@ -16,7 +16,7 @@ class AddOrEditTaskModal extends React.Component {
             ...props.changable,
             title: props.changable?props.changable.title:'',
             description: props.changable?props.changable.description:'',
-            date: props.changable? new Date(props.changable.date): new Date()   
+            date: props.changable? new Date(props.changable.date): new Date(),
         }
     }
         
@@ -27,27 +27,25 @@ class AddOrEditTaskModal extends React.Component {
         });
     }
     
-    componentDidMount () {
-        this.inputRef.current.focus();
-    }
-
     handleS = ({key, type}) => {
         const {title, description} = this.state;
-        const {onSubmit, onHide} = this.props;
-        console.log(type,key);
+        const {onSubmit} = this.props;
         if((type === 'keypress' && key !== 'Enter') || !(!!title || !!description) ) return;
         
-        const dataObj = {...this.state};
-        dataObj.date = isoDate(dataObj.date)
+        const dataObj = {...this.state};        
+        dataObj.date = isoDate(dataObj.date);
 
         onSubmit (dataObj);
-        onHide ();
     }
 
     setDate = (date) => {
         this.setState({
             date
         });
+    }
+
+    componentDidMount () {
+        this.inputRef.current.focus();
     }
 
     render () {
