@@ -1,11 +1,15 @@
 import React from 'react';
 import styles from './contact.module.css';
+import ContactForm from '../../ContactForm/ContactForm';
 
 
 class Contact extends React.Component{
     render () {
-        return(
-            <h1 className = {styles.myColor}>Contact</h1>
+        return (
+            <div>
+                <h1 className = {styles.myColor}>Contact</h1>
+                <ContactForm />
+            </div>
         )
     }
 }

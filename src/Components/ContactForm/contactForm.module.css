@@ -1,0 +1,11 @@
+.formContainer{
+    width:50%;
+    margin: 0  auto;
+    color: palevioletred;
+}
+
+.formGroup{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

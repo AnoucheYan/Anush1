@@ -66,3 +66,7 @@ a:hover{
   text-decoration: none;
   color: palevioletred;
 }
+
+textarea{
+  resize: none;
+}
