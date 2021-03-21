@@ -1,6 +1,8 @@
 import React, { createRef } from 'react';
 import {Form, Button, Container} from 'react-bootstrap';
-import styles from './contactForm.module.css'
+import styles from './contactForm.module.css';
+import {withRouter} from 'react-router-dom';
+import {required, maxLength, minLength, emailValidation, validation} from '../../helpers/validationFunctions';
 
 
 const inputsItems = [
@@ -31,25 +33,71 @@ class ContactForm extends React.Component {
         super (props);
         this.inputRef = createRef ();
         this.state = {
-            name: "",
-            email: "",
-            message: ""
+            name: {
+                value: "",
+                valid: false,
+                error: null
+            },
+            email: {
+                value: "",
+                valid: false,
+                error: null
+            },
+            message: {
+                value: "",
+                valid: false,
+                error: null
+            },
+            errorMessage: "",
+            validated: false
         }
     }
 
     change = (event) => {
         const {name, value} = event.target;
+        
+        let error = "";
+
+        const maxLength25 = maxLength(25);
+        const maxLength100 = maxLength(100);
+        const minLength2 = minLength(2);
+        const minLength3 = minLength(3);
+
+        switch (name) {
+            case "name":
+            case "email":
+            case "message":
+                error = required(value) ||
+                (name==="email" && emailValidation(value)) || 
+                (name==="message" ? minLength3(value) : minLength2(value)) ||  
+                (name==="message" ? maxLength100(value) : maxLength25(value));
+            break;
+            default:;
+        }
+
         this.setState ({
-            [name]: value
+            [name]: {
+                value,
+                valid: !!!error,
+                error
+            },
+            validated: validation(this.state)
         });
     }
 
     submitForm = () => {
+        const dataObj = {...this.state};
+        delete dataObj.errorMessage;
+
+        for (let key in dataObj) {
+            dataObj[key] = dataObj[key].value;
+        }
+
         (async () => {
             try{
                 const response = await fetch("http://localhost:3001/form",{
                     method: "POST",
-                    body: JSON.stringify(this.state),
+                    body: JSON.stringify(dataObj),
                     headers:{
                         "Content-Type": "application/json"
                     }
@@ -58,8 +106,11 @@ class ContactForm extends React.Component {
                 if (data.error) {
                     throw data.error;
                 }
-                console.log(data);
+                this.props.history.push("/");
             } catch(error) {
+                this.setState({
+                    errorMessage:error.message
+                });
                 console.log(error);
             };
         })()
@@ -76,7 +127,7 @@ class ContactForm extends React.Component {
             return (
                 <Form.Group 
                     controlId = {input.controlId} 
-                    className = {styles.formGroup} 
+                    className = {styles.formGroup}
                     key = {idx}
                 >
                     <Form.Label>{input.label}</Form.Label>
@@ -89,9 +140,11 @@ class ContactForm extends React.Component {
                         maxLength = {input.maxLength}
                         ref = {!idx ? this.inputRef : null}
                         onChange = {this.change}
-                        value = {this.state[input.name]}
-                        required
+                        value = {this.state[input.name].value}
                     />
+                    <Form.Text className = {styles.errorStyle}>
+                        {this.state[input.name].error}
+                    </Form.Text>
                 </Form.Group>
             );
         })
@@ -100,10 +153,14 @@ class ContactForm extends React.Component {
             <Container className = {styles.formContainer}>
                 <Form onSubmit = {(e) => e.preventDefault()}>
                     {inputs}
+                    <p className = {styles.errorStyle}>
+                        {this.state.errorMessage}
+                    </p>
                     <Button 
                         variant = "primary"
                         type = "submit"
                         onClick = {this.submitForm}
+                        disabled = {!this.state.validated}
                     >
                         Submit
                     </Button>
@@ -114,4 +171,4 @@ class ContactForm extends React.Component {
 }
 
 
-export default ContactForm;
+export default withRouter(ContactForm);
