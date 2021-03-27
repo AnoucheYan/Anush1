@@ -7,7 +7,7 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 import NotFound from './Components/pages/NotFound/NotFound';
 import OneTask from './Components/pages/OneTask/OneTask';
 
-
+import ContactContextProvider from './Context/ContactContext';
 
   
   const pages = [
@@ -36,9 +36,18 @@ import OneTask from './Components/pages/OneTask/OneTask';
 function App () {
 
   const myPages = pages.map((page, idx) => {
+    if (page.path === "/contact"){
       return (
-        <Route key = {idx} path = {page.path} component = {page.component} exact />
+        <Route  key = {idx} path = {page.path} exact >        
+          <ContactContextProvider>
+            {<page.component />}
+          </ContactContextProvider>
+        </Route>
       )
+    }
+    return (
+      <Route key = {idx} path = {page.path} component = {page.component} exact />
+    )
   })
 
   return (

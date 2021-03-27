@@ -2,7 +2,7 @@ import React, { createRef } from 'react';
 import {Form, Button, Container} from 'react-bootstrap';
 import styles from './contactForm.module.css';
 import {withRouter} from 'react-router-dom';
-import {required, maxLength, minLength, emailValidation, validation} from '../../helpers/validationFunctions';
+import {required, maxLength, minLength, emailValidation} from '../../helpers/validationFunctions';
 
 
 const inputsItems = [
@@ -48,8 +48,7 @@ class ContactForm extends React.Component {
                 valid: false,
                 error: null
             },
-            errorMessage: "",
-            validated: false
+            errorMessage: ""
         }
     }
 
@@ -60,8 +59,7 @@ class ContactForm extends React.Component {
 
         const maxLength25 = maxLength(25);
         const maxLength100 = maxLength(100);
-        const minLength2 = minLength(2);
-        const minLength3 = minLength(3);
+        const minLength2 = minLength(2)
 
         switch (name) {
             case "name":
@@ -69,7 +67,7 @@ class ContactForm extends React.Component {
             case "message":
                 error = required(value) ||
                 (name==="email" && emailValidation(value)) || 
-                (name==="message" ? minLength3(value) : minLength2(value)) ||  
+                minLength2(value) ||  
                 (name==="message" ? maxLength100(value) : maxLength25(value));
             break;
             default:;
@@ -80,8 +78,7 @@ class ContactForm extends React.Component {
                 value,
                 valid: !!!error,
                 error
-            },
-            validated: validation(this.state)
+            }
         });
     }
 
@@ -113,9 +110,7 @@ class ContactForm extends React.Component {
                 });
                 console.log(error);
             };
-        })()
-
-
+        })();
     }
 
     componentDidMount () {
@@ -123,6 +118,9 @@ class ContactForm extends React.Component {
     }
 
     render () {
+        const {name, email, message, errorMessage} = this.state;
+        const validated = name.valid && email.valid && message.valid;
+
         const inputs = inputsItems.map((input, idx) => {
             return (
                 <Form.Group 
@@ -154,13 +152,13 @@ class ContactForm extends React.Component {
                 <Form onSubmit = {(e) => e.preventDefault()}>
                     {inputs}
                     <p className = {styles.errorStyle}>
-                        {this.state.errorMessage}
+                        {errorMessage}
                     </p>
                     <Button 
                         variant = "primary"
                         type = "submit"
                         onClick = {this.submitForm}
-                        disabled = {!this.state.validated}
+                        disabled = {!validated}
                     >
                         Submit
                     </Button>
