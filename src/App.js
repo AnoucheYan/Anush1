@@ -3,42 +3,44 @@ import ToDo from './Components/pages/ToDo/ToDo';
 import About from './Components/pages/About/About';
 import Contact from './Components/pages/Contact/Contact';
 import NavigationMenu from './Components/NavigationMenu/NavigationMenu';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import NotFound from './Components/pages/NotFound/NotFound';
-import OneTask from './Components/pages/OneTask/OneTask';
+// import OneTask from './Components/pages/OneTask/OneTask';
 
 import ContactContextProvider from './Context/ContactContext';
+import OneTaskWithReducterHook from './Components/pages/OneTask/OneTaskWithReducterHook';
 
-  
-  const pages = [
-    {
-      path: "/",
-      component: ToDo
-    },
-    {
-      path: "/about",
-      component: About
-    },
-    {
-      path: "/contact",
-      component: Contact
-    },
-    {
-      path: "/onetask/:id",
-      component: OneTask
-    },
-    {
-      path: "/404",
-      component: NotFound
-    }
-  ]
-  
-function App () {
+
+const pages = [
+  {
+    path: "/",
+    component: ToDo
+  },
+  {
+    path: "/about",
+    component: About
+  },
+  {
+    path: "/contact",
+    component: Contact
+  },
+  {
+    path: "/onetask/:id",
+    // component: OneTask
+    component: OneTaskWithReducterHook
+  },
+  {
+    path: "/404",
+    component: NotFound
+  }
+]
+
+function App() {
 
   const myPages = pages.map((page, idx) => {
-    if (page.path === "/contact"){
+    if (page.path === "/contact") {
       return (
-        <Route  key = {idx} path = {page.path} exact >        
+        <Route key={idx} path={page.path} exact >
           <ContactContextProvider>
             {<page.component />}
           </ContactContextProvider>
@@ -46,7 +48,7 @@ function App () {
       )
     }
     return (
-      <Route key = {idx} path = {page.path} component = {page.component} exact />
+      <Route key={idx} path={page.path} component={page.component} exact />
     )
   })
 

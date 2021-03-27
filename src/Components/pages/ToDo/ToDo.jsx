@@ -61,11 +61,12 @@ class ToDo extends React.Component {
         this.setState({
             loading:true
         });
+        
         fetch("http://localhost:3001/task/"+id,{
             method: "DELETE"
         })
         .then(res => res.json())
-        .then(data =>{
+        .then(data => {
             if(data.error){
                 throw data.error
             }
