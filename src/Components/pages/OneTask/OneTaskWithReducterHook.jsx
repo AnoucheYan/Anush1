@@ -59,7 +59,7 @@ const OneTaskWithReducterHook = (props) => {
             .finally(() => {
                 dispatch({ type: "load", loading: false })
             });
-    }, [])
+    }, [props.history, props.match.params])
 
     const goBack = () => {
         props.history.push('/')
@@ -83,10 +83,8 @@ const OneTaskWithReducterHook = (props) => {
                 props.history.push('/')
             })
             .catch(error => {
-                console.log("error: ", error);
-            })
-            .finally(() => {
                 dispatch({ type: "load", loading: false })
+                console.log("error: ", error);
             });
     }
 

@@ -39,12 +39,10 @@ class OneTask extends React.Component{
             history.push('/')        
         })
         .catch(error => {
-            console.log("error: ",error);
-        })
-        .finally(() => {
             this.setState({
                 loading: false
             })
+            console.log("error: ",error);
         });
     }
 
