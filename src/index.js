@@ -6,16 +6,22 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "react-datepicker/dist/react-datepicker.css";
-import {BrowserRouter} from 'react-router-dom'; // I can import Router and use it instead of BrowserRowter, but Rowter don't save history
+import { BrowserRouter } from 'react-router-dom'; // I can import Router and use it instead of BrowserRowter, but Rowter don't save history
+import store from './Redux/store';
+import { Provider } from 'react-redux';
+
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <Provider store={store}>  {/* passing store to app with provider */}
+        <App />
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

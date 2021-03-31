@@ -1,0 +1,33 @@
+.parts{
+    margin: 100px 0 50px 0;
+    color:rgb(33, 6, 59);
+}
+
+.counterButtons{
+    background-color: violet;
+    font-weight: bold;  
+    margin: 10px;
+    width: 40px;    
+    height: 40px;
+    border: none;
+    border-radius: 20%;    
+}
+
+.counterValue{
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.inputButton{
+    background-color: violet;
+    border: 1px solid rgb(33, 6, 59);
+    font-weight: bold;
+    height: 40px;
+    margin: 10px 0;
+}
+
+.myInput{
+    height: 40px;
+    border: 1px solid rgb(33, 6, 59);
+    font-weight: bold;
+}
