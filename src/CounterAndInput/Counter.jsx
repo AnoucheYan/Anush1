@@ -12,24 +12,26 @@ const Counter = (props) => {
             <div>
                 <button className={styles.counterButtons} onClick={props.minus}>-</button>
                 <button className={styles.counterButtons}onClick={props.plus}>+</button>
+                <button className={styles.counterButtons}onClick={props.reset}>Reset</button>
             </div>
         </div>
 
     );
 }
 
-// for passing useful state elements to ContextWithRedux
+// for passing useful state elements to CounterWithRedux
 const mapStateToProps = (state) => {
     return {
         counter: state.counter
     }
 }//
 
-// for passing useful methods to ContextWithRedux
+// for passing useful methods to CounterWithRedux
 const mapDispatchToProps = (dispatch) => {
     return {
         plus: () => dispatch({ type: "plus" }),
-        minus: () => dispatch({ type: "minus" })
+        minus: () => dispatch({ type: "minus" }),
+        reset: () => dispatch({ type: "reset" })
     }
 }//
 

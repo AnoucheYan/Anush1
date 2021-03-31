@@ -8,6 +8,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        // Counter part
         case "plus":
             return {
                 ...state,
@@ -18,6 +19,13 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 counter: state.counter - 1
             }
+        case "reset":
+            return {
+                ...state,
+                counter: 0
+            }
+        //
+        // Input part
         case "setInputValue":
             return {
                 ...state,
@@ -28,6 +36,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 inputValue: ""
             }
+        //
         default: return state;
     }
 }
