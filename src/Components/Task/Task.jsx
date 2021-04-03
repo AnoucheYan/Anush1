@@ -14,7 +14,7 @@ const Task = ({
     setRemoveTaskId,
     disabled,
     checked,
-    changableTask
+    setChangableTask
 }) => {
     
     return(
@@ -68,7 +68,7 @@ const Task = ({
                 <Button
                     variant = "warning"
                     className = "ml-3"
-                    onClick = {() => changableTask(task)}
+                    onClick = {() => setChangableTask(task)}
                     disabled = {disabled}
                 >
                     <FontAwesomeIcon icon = {faPenAlt} />
@@ -88,7 +88,7 @@ Task.propTypes = {
     setRemoveTaskId: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     checked: PropTypes.bool.isRequired,
-    changableTask: PropTypes.func
+    setChangableTask: PropTypes.func
 }
 
 export default memo(Task);

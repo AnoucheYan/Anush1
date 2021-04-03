@@ -1,14 +1,10 @@
 import {Modal, Button} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
+
 const Confirmation = (props) => {
 
     const {onHide, onSubmit, modalMessage} = props;
-
-    const functionsDuringConfirmation = () => {
-        onSubmit();
-        onHide();
-    }
 
     return (
         <Modal show = {true} onHide = {onHide}>
@@ -21,7 +17,7 @@ const Confirmation = (props) => {
                 <Button variant="secondary" onClick={onHide}>
                     No, I have change my mind!!!
                 </Button>
-                <Button variant="danger" onClick={functionsDuringConfirmation}>
+                <Button variant="danger" onClick={onSubmit}>
                     Yes, delete it!!!
                 </Button>
             </Modal.Footer>

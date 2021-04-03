@@ -13,11 +13,11 @@ class AddOrEditTaskModal extends React.Component {
         this.inputRef = React.createRef();
 
         this.state = {
-            ...props.changable,
-            title: props.changable?props.changable.title:'',
-            description: props.changable?props.changable.description:'',
-            date: props.changable? new Date(props.changable.date): new Date(),
-        }
+            ...props.changableTask,
+            title: props.changableTask?props.changableTask.title:'',
+            description: props.changableTask?props.changableTask.description:'',
+            date: props.changableTask? new Date(props.changableTask.date): new Date(),
+         }
     }
         
     hendleChange = (event) => {
@@ -50,8 +50,8 @@ class AddOrEditTaskModal extends React.Component {
 
     render () {
         const {title, description, date} = this.state;
-        const {onHide, changable} = this.props;
-    
+        const {onHide, changableTask} = this.props;
+
         return (
             <div>
                 <Modal
@@ -63,7 +63,7 @@ class AddOrEditTaskModal extends React.Component {
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id = "contained-modal-title-vcenter">
-                            {changable?"Make Your adjustments":"Add new task!!!"}
+                            {changableTask?"Make Your adjustments":"Add new task!!!"}
                         </Modal.Title>
                     </Modal.Header>
                 
@@ -100,10 +100,9 @@ class AddOrEditTaskModal extends React.Component {
                         <Button onClick = {this.handleS}
                             disabled = {!(!!title && !!description)}
                         >
-                            {changable?"Save changes":"Add task"}
+                            {changableTask?"Save changes":"Add task"}
                         </Button>
-                        <Button onClick = {onHide}>Close</Button>
-                    
+                        <Button onClick = {() => onHide()}>Close</Button>                    
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -115,7 +114,7 @@ AddOrEditTaskModal.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     onHide: PropTypes.func.isRequired,
-    changable: PropTypes.object
+    changableTask: PropTypes.object
 }
         
 export default AddOrEditTaskModal;
