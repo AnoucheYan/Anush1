@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 import actionTypes from './actionTypes';
-import {required, maxLength, minLength, emailValidation} from '../helpers/validationFunctions';
+import { required, maxLength, minLength, emailValidation } from '../helpers/validationFunctions';
 
 
 // const initialState = {
@@ -198,7 +198,7 @@ const reducer = (state = initialState, action) => {
                 }
             }
         }
-        case actionTypes.SET_CHANGABLE_TASK: {            
+        case actionTypes.SET_CHANGABLE_TASK: {
             return {
                 ...state,
                 stateForToDo: {
@@ -207,39 +207,39 @@ const reducer = (state = initialState, action) => {
                 }
             }
         }
-
+        //
 
         //Cases for Contact
         case actionTypes.CHANGE_VALUES: {
-            // const {name, value}=event.target;
-            
+            const { name, value } = action.event.target;
+
             let error = "";
-    
-            // const maxLength25 = maxLength(25);
-            // const maxLength100 = maxLength(100);
-            // const minLength2 = minLength(2)
-    
-            // switch (name) {
-            //     case "name":
-            //     case "email":
-            //     case "message":
-            //         error = required(value) ||
-            //         (name==="email" && emailValidation(value)) || 
-            //         minLength2(value) ||  
-            //         (name==="message" ? maxLength100(value) : maxLength25(value));
-            //     break;
-            //     default:;
-            // }
+
+            const maxLength25 = maxLength(25);
+            const maxLength100 = maxLength(100);
+            const minLength2 = minLength(2)
+
+            switch (name) {
+                case "name":
+                case "email":
+                case "message":
+                    error = required(value) ||
+                        (name === "email" && emailValidation(value)) ||
+                        minLength2(value) ||
+                        (name === "message" ? maxLength100(value) : maxLength25(value));
+                    break;
+                default: ;
+            }
 
             return {
                 ...state,
                 stateForContact: {
                     ...state.stateForContact,
-                    // [name]: {
-                    //     value:action.value,
-                    //     valid: !!!action.error,
-                    //     error: action.error
-                    // }
+                    [name]: {
+                        value,
+                        valid: !!!error,
+                        error
+                    }
                 }
             }
         }
@@ -248,10 +248,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 stateForContact: {
                     ...state.stateForContact,
-                    errorMessage:action.error.message
+                    errorMessage: action.error.message
                 }
             }
         }
+        //
 
         default: return state;
     }

@@ -349,7 +349,7 @@ class ToDo extends React.Component {
 
                     {
                         changableTask && <AddOrEditTaskModal
-                            changableTask={this.changableTask}
+                            changableTask={changableTask}
                             onHide={setChangableTask}
                             onSubmit={this.edit}
                         />

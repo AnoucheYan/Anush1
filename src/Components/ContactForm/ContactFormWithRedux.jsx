@@ -81,7 +81,7 @@ class ContactForm extends React.Component {
         //         error
         //     }
         // });
-        this.props.changeValues(event.target.name, event.target.value);
+        this.props.changeValues(event);
     }
 
     submitForm = () => {
@@ -191,8 +191,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeValues: (name, value) => {
-            dispatch({ type: actionTypes.CHANGE_VALUES, name, value });
+        changeValues: (event) => {
+            dispatch({ type: actionTypes.CHANGE_VALUES, event});
         },
         submitError: (error) => {
             dispatch({ type: actionTypes.SUBMIT_FORM, error});
