@@ -1,11 +1,11 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import styles from './task.module.css';
-import {Button} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPenAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPenAlt, faCheckCircle, faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import isoDate from '../../helpers/IsoDate';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const Task = ({
@@ -14,10 +14,12 @@ const Task = ({
     setRemoveTaskId,
     disabled,
     checked,
-    setChangableTask
+    setChangableTask,
+
+    changeStatusThunk
 }) => {
-    
-    return(
+
+    return (
         <div className={`${styles.task} ${checked && styles.checked}`}>
 
             <div>
@@ -25,13 +27,13 @@ const Task = ({
                     <input
                         type="checkbox"
                         onChange={() => setRemoveTaskId(task._id)}
-                        checked = {checked}
+                        checked={checked}
                     />
                 </div>
 
                 <div>
                     <Link to={`/onetask/${task._id}`}>
-                        <p className = {styles.titleStyle}> 
+                        <p className={styles.titleStyle}>
                             {task.title}
                         </p>
                     </Link>
@@ -39,41 +41,50 @@ const Task = ({
             </div>
 
             <div>
-                <p className = {styles.parMargin}> 
+                <p className={styles.parMargin}>
                     {task.description}
                 </p>
             </div>
 
             <div>
-                <p className = {styles.parMargin}> 
+                <p className={styles.parMargin}>
                     Dadline: {isoDate(task.date)}
                 </p>
             </div>
 
             <div>
-                <p className = {styles.parMargin}> 
+                <p className={styles.parMargin}>
                     Created at: {isoDate(task.created_at)}
                 </p>
             </div>
-            
-            <div className = "mt-3">
+
+            <div className="mt-3">
                 <Button
-                    variant = "danger"
-                    onClick = {() => handleDelTask(task._id)}
-                    disabled = {disabled}
+                    variant="danger"
+                    onClick={() => handleDelTask(task._id)}
+                    disabled={disabled}
                 >
-                    <FontAwesomeIcon icon = {faTrash} />
+                    <FontAwesomeIcon icon={faTrash} />
                 </Button>
 
                 <Button
-                    variant = "warning"
-                    className = "ml-3"
-                    onClick = {() => setChangableTask(task)}
-                    disabled = {disabled}
+                    variant="warning"
+                    className="ml-3"
+                    onClick={() => setChangableTask(task)}
+                    disabled={disabled}
                 >
-                    <FontAwesomeIcon icon = {faPenAlt} />
+                    <FontAwesomeIcon icon={faPenAlt} />
                 </Button>
-            </div>          
+
+                <Button
+                    variant="info"
+                    className="ml-3"
+                    onClick={() => changeStatusThunk(task)}
+                    disabled={disabled}
+                >
+                    <FontAwesomeIcon icon={task.status === "active" ? faHourglassHalf : faCheckCircle} />
+                </Button>
+            </div>
         </div>
     )
 }
@@ -88,7 +99,8 @@ Task.propTypes = {
     setRemoveTaskId: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     checked: PropTypes.bool.isRequired,
-    setChangableTask: PropTypes.func
+    setChangableTask: PropTypes.func,
+    changeStatusThunk:PropTypes.func.isRequired
 }
 
 export default memo(Task);

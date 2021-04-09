@@ -1,0 +1,30 @@
+.container{
+    background-color: rgba(218, 134, 162, .5);
+    color: palevioletred;
+}
+
+.search{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 30px 20px;
+    width: 100%;
+}
+
+.datePickerContainer{
+    width: 60%;
+}
+
+.datePicker{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.drops{
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    margin: 10px 0;
+}

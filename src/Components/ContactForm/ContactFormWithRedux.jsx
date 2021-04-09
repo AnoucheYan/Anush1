@@ -85,7 +85,7 @@ class ContactForm extends React.Component {
     }
 
     submitForm = () => {
-        const dataObj = { ...this.state };
+        const dataObj = this.props.myState;
         delete dataObj.errorMessage;
 
         for (let key in dataObj) {
@@ -106,6 +106,7 @@ class ContactForm extends React.Component {
                     throw data.error;
                 }
                 this.props.history.push("/");
+                this.props.resetForm();
             } catch (error) {
                 // this.setState({
                 //     errorMessage: error.message
@@ -121,15 +122,15 @@ class ContactForm extends React.Component {
     }
 
     render() {
-        const { 
-            name, 
-            email, 
-            message, 
+        const {
+            name,
+            email,
+            message,
             errorMessage,
             changeValues
         } = this.props;
 
-  
+
         // const {name, email, message, errorMessage} = this.state;
         const validated = name.valid && email.valid && message.valid;
 
@@ -181,21 +182,36 @@ class ContactForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+
+    const {
+        name,
+        email,
+        message,
+        errorMessage
+    } = state.contactFormState;
+
+    const myState = { ...state.contactFormState };
+
     return {
-        name: state.stateForContact.name,
-        email: state.stateForContact.email,
-        message: state.stateForContact.message,
-        errorMessage: state.stateForContact.errorMessage
+        name,
+        email,
+        message,
+        errorMessage,
+        myState
     }
+
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         changeValues: (event) => {
-            dispatch({ type: actionTypes.CHANGE_VALUES, event});
+            dispatch({ type: actionTypes.CHANGE_VALUES, event });
         },
         submitError: (error) => {
-            dispatch({ type: actionTypes.SUBMIT_FORM, error});
+            dispatch({ type: actionTypes.SUBMIT_FORM, error });
+        },
+        resetForm: () => {
+            dispatch({ type: actionTypes.RESET_FORM });
         }
     }
 }

@@ -7,9 +7,10 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import NotFound from './Components/pages/NotFound/NotFound';
 // import OneTask from './Components/pages/OneTask/OneTask';
 import ContactContextProvider from './Context/ContactContext';
-import OneTaskWithReducterHook from './Components/pages/OneTask/OneTaskWithReducterHook';
+// import OneTaskWithReducterHook from './Components/pages/OneTask/OneTaskWithReducterHook';
 // import Counter from './CounterAndInput/Counter';
 // import InputResult from './CounterAndInput/InputResult';
+import OneTaskWithRedux from './Components/pages/OneTask/OneTaskWithRedux';
 
 
 const pages = [
@@ -29,7 +30,8 @@ const pages = [
   {
     path: "/onetask/:id",
     // component: OneTask
-    Component: OneTaskWithReducterHook
+    // Component: OneTaskWithReducterHook
+    Component: OneTaskWithRedux
   },
   {
     path: "/404",
