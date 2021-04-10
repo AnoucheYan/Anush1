@@ -259,3 +259,27 @@ export const changeTask = (oneTask) => (dispatch) => {
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
 }
+
+
+//Search actions
+export const searchAndSortTasks = (backendData) => (dispatch) => {
+    dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
+
+    let q = "?"
+    for (let key in backendData) {
+        q += key + "=" + backendData[key] + "&";
+    }
+
+    fetch(`http://localhost:3001/task` + q.slice(0, q.length - 1))
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) throw data.error;
+            dispatch({ type: actionTypes.SET_TASKS, data });
+        })
+        .catch(error => {
+            dispatch({ type: actionTypes.SET_ERROR, error: error.message });
+        })
+        .finally(() => {
+            dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
+        });
+}

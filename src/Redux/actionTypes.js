@@ -23,7 +23,13 @@ const types = Object.freeze({
 
     //Actions for OneTask
     SET_ONE_TASK: "SET_ONE_TASK",
-    OPEN_EDIT_TASK_MODAL: "OPEN_EDIT_TASK_MODAL"
+    OPEN_EDIT_TASK_MODAL: "OPEN_EDIT_TASK_MODAL",
+
+    //Actions for Search
+    SET_DROPDOWN_VALUE: "SET_DROPDOWN_VALUE",
+    CHANGE_SEARCH: "CHANGE_SEARCH",
+    SET_DATE: "SET_DATE",
+    RESET_SEARCH: "RESET_SEARCH"
 })
 
 
