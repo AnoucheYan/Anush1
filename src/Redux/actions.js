@@ -223,15 +223,15 @@ export const delTask = (id, history) => (dispatch) => {
         });
 }
 
-export const changeTask = (oneTask) => (dispatch) => {
+export const changeTask = (changableTask) => (dispatch) => {
     // this.setState({
     //     loading: true
     // })
     dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    fetch("http://localhost:3001/task/" + oneTask._id, {
+    fetch("http://localhost:3001/task/" + changableTask._id, {
         method: "PUT",
-        body: JSON.stringify(oneTask),
+        body: JSON.stringify(changableTask),
         headers: {
             "Content-Type": "application/json"
         }
@@ -282,4 +282,34 @@ export const searchAndSortTasks = (backendData) => (dispatch) => {
         .finally(() => {
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
+}
+
+
+//ContactForm action
+export const submitMyForm = (dataObj, history) => (dispatch) => {
+    (async () => {
+        try {
+            const response = await fetch("http://localhost:3001/form", {
+                method: "POST",
+                body: JSON.stringify(dataObj),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            const data = await response.json();
+            if (data.error) {
+                throw data.error;
+            }
+            history.push("/");
+            // this.props.resetForm();
+            dispatch({ type: actionTypes.RESET_FORM });
+        } catch (error) {
+            // this.setState({
+            //     errorMessage: error.message
+            // });
+            // this.props.submitError(error)
+            dispatch({ type: actionTypes.SUBMIT_FORM, error });
+            console.log(error);
+        };
+    })();
 }

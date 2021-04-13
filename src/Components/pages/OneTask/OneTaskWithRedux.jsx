@@ -63,13 +63,15 @@ const OneTask = (props) => {
                     </div>
                 </div>
             </div>
+
             {
                 showEditModal && <AddOrEditTaskModal
-                    changable={oneTask}
+                    changableTask={oneTask}
                     onHide={openEditTaskModal}
-                    onSubmit={() => changeTaskThunk(oneTask)}
+                    onSubmit={changeTaskThunk}
                 />
             }
+            
             {
                 loading && <Loading />
             }
@@ -105,7 +107,7 @@ const mapDispatchToProps = (dispatch) => {
         //thunks
         setTaskThunk: (id, history) => dispatch(setTask(id, history)),
         delTaskThunk: (id, history) => dispatch(delTask(id, history)),
-        changeTaskThunk: (oneTask) => dispatch(changeTask(oneTask))
+        changeTaskThunk: (changableTask) => dispatch(changeTask(changableTask))
     }
 }
 
