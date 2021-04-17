@@ -9,11 +9,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.CHANGE_LOADING:
-            return {
-                ...state,
-                loading: action.loading
-            }
+        // case actionTypes.CHANGE_LOADING:
+        //     return {
+        //         ...state,
+        //         loading: action.loading
+        //     }
         case actionTypes.SET_ONE_TASK:
             return {
                 ...state,

@@ -84,22 +84,22 @@ const mapStateToProps = (state) => {
     const {
         oneTask,
         showEditModal,
-        loading,
+        // loading,
     } = state.oneTaskState;
 
     return {
         oneTask,
         showEditModal,
-        loading,
+        loading:state.globalState.loading
     }
 
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeLoading: (loading) => {
-            dispatch({ type: actionTypes.CHANGE_LOADING, loading });
-        },
+        // changeLoading: (loading) => {
+        //     dispatch({ type: actionTypes.CHANGE_LOADING, loading });
+        // },
         openEditTaskModal: () => {
             dispatch({ type: actionTypes.OPEN_EDIT_TASK_MODAL });
         },

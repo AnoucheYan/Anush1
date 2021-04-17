@@ -184,7 +184,7 @@ const ToDo = (props) => {
 
 const mapStateToProps = (state) => {
     const {
-        loading,
+        // loading,
         tasks,
         removeTasks,
         isAllChecked,
@@ -192,12 +192,12 @@ const mapStateToProps = (state) => {
         confirmRemoving,
         changableTask,
 
-        success,
-        error
+        // success,
+        // error
     } = state.toDoState;
 
     return {
-        loading,
+        loading: state.globalState.loading,
         tasks,
         removeTasks,
         isAllChecked,
@@ -205,17 +205,17 @@ const mapStateToProps = (state) => {
         confirmRemoving,
         changableTask,
 
-        success,
-        error
+        success:state.globalState.success,
+        error:state.globalState.error,
     }
 
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeLoading: (loading) => {
-            dispatch({ type: actionTypes.CHANGE_LOADING, loading });
-        },
+        // changeLoading: (loading) => {
+        //     dispatch({ type: actionTypes.CHANGE_LOADING, loading });
+        // },
         // setTasks: (data) => {
         //     dispatch({ type: actionTypes.SET_TASKS, data });
         // },
