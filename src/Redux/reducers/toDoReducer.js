@@ -2,7 +2,7 @@ import actionTypes from '../actionTypes';
 
 
 const initialState = {
-    // loading: false,
+    loading: false,
     tasks: [],
     removeTasks: new Set(),
     isAllChecked: false,
@@ -10,20 +10,20 @@ const initialState = {
     confirmRemoving: false,
     changableTask: null,
 
-    // success: "",
-    // error: ""
+    success: "",
+    error: ""
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        // case actionTypes.CHANGE_LOADING:
-        //     return {
-        //         ...state,
-        //         loading: action.loading,
+        case actionTypes.CHANGE_LOADING:
+            return {
+                ...state,
+                loading: action.loading,
 
-        //         error: action.loading ? "" : state.error,
-        //         success: action.loading ? "" : state.success
-        //     }
+                error: action.loading ? "" : state.error,
+                success: action.loading ? "" : state.success
+            }
         case actionTypes.SET_TASKS: {
             return {
                 ...state,
@@ -39,7 +39,7 @@ const reducer = (state = initialState, action) => {
                 tasks,
                 showHideAddOrEdit: false,
 
-                // success: "You have added new task!"
+                success: "You have added new task!"
             }
         }
         case actionTypes.EDIT_TASK: {
@@ -52,7 +52,7 @@ const reducer = (state = initialState, action) => {
                 tasks,
                 changableTask: null,
 
-                // success: "Successful edited!"
+                success: "Successful edited!"
             }
         }
         case actionTypes.DEL_ONE_TASK: {
@@ -64,7 +64,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 tasks,
 
-                // success: "Task was deleted succesfully!!!"
+                success: "Task was deleted succesfully!!!"
             }
         }
         case actionTypes.CHECK_TASK: {
@@ -109,7 +109,7 @@ const reducer = (state = initialState, action) => {
                 isAllChecked: false,
                 confirmRemoving: false,
 
-                // success: "Tasks were deleted successfully!!!"
+                success: "Tasks were deleted successfully!!!"
             }
         }
         case actionTypes.OPEN_ADD_OR_EDIT_TASK_MODAL: {
@@ -131,11 +131,11 @@ const reducer = (state = initialState, action) => {
             }
         }
 
-        // case actionTypes.SET_ERROR:
-        //     return {
-        //         ...state,
-        //         error: action.error
-        //     }
+        case actionTypes.SET_ERROR:
+            return {
+                ...state,
+                error: action.error
+            }
 
         case actionTypes.CHANGE_STATUS:
             let tasks = [...state.tasks];

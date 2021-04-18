@@ -3,10 +3,9 @@ import toDoReducer from './reducers/toDoReducer';
 import contactFormReducer from './reducers/contactFormReducer';
 import oneTaskReducer from './reducers/oneTaskReducer';
 import searchReducer from './reducers/searchReducer';
-import globalReducer from './reducers/globalReducer';
 import addOrEditTaskModalReducer from './reducers/addOrEditTaskModalReducer';
 import thunk from 'redux-thunk';
-// import logger from 'redux-logger';
+import logger from 'redux-logger';
 
 
 const reducers = combineReducers({
@@ -14,14 +13,18 @@ const reducers = combineReducers({
     contactFormState: contactFormReducer,
     oneTaskState: oneTaskReducer,
     searchState: searchReducer,
-    addOrEditTaskModalState:addOrEditTaskModalReducer,
-    globalState: globalReducer
+    addOrEditTaskModalState:addOrEditTaskModalReducer
 });
 
-// const middlewares = [thunk, logger];
+let middlewares
 
-// const store = createStore(reducers, applyMiddleware(...middlewares));
-const store = createStore(reducers, applyMiddleware(thunk));
+if (process.env.NODE_ENV==="development"){
+    middlewares = [thunk, logger];
+} else if(process.env.NODE_ENV==="production"){
+    middlewares = [thunk];
+}
+
+const store = createStore(reducers, applyMiddleware(...middlewares));
 
 
 export default store;

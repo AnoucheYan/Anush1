@@ -9,7 +9,6 @@ import Loading from '../../Loading/Loading';
 import { connect } from 'react-redux';
 import actionTypes from '../../../Redux/actionTypes';
 import { setTasks, addTask, editTask, delOneTask, delSelTasks, changeStatus } from '../../../Redux/actions';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Search from '../../Search/Search';
@@ -38,7 +37,6 @@ const ToDo = (props) => {
         editTaskThunk,
         delOneTaskThunk,
         delSelTasksThunk,
-
         changeStatusThunk
     } = props;
 
@@ -184,59 +182,39 @@ const ToDo = (props) => {
 
 const mapStateToProps = (state) => {
     const {
-        // loading,
+        loading,
         tasks,
         removeTasks,
         isAllChecked,
         showHideAddOrEdit,
         confirmRemoving,
         changableTask,
-
-        // success,
-        // error
+        success,
+        error
     } = state.toDoState;
 
     return {
-        loading: state.globalState.loading,
+        loading,
         tasks,
         removeTasks,
         isAllChecked,
         showHideAddOrEdit,
         confirmRemoving,
         changableTask,
-
-        success:state.globalState.success,
-        error:state.globalState.error,
+        success,
+        error
     }
 
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // changeLoading: (loading) => {
-        //     dispatch({ type: actionTypes.CHANGE_LOADING, loading });
-        // },
-        // setTasks: (data) => {
-        //     dispatch({ type: actionTypes.SET_TASKS, data });
-        // },
-        // addTask: (data) => {
-        //     dispatch({ type: actionTypes.ADD_TASK, data });
-        // },
-        // editTask: (data) => {
-        //     dispatch({ type: actionTypes.EDIT_TASK, data });
-        // },
-        // delOneTask: (id) => {
-        //     dispatch({ type: actionTypes.DEL_ONE_TASK, id });
-        // },
         checkTask: (_id) => {
             dispatch({ type: actionTypes.CHECK_TASK, _id });
         },
         checkAllTasks: () => {
             dispatch({ type: actionTypes.CHECK_ALL_TASKS });
         },
-        // delSelTasks: () => {
-        //     dispatch({ type: actionTypes.DEL_SEL_TASKS });
-        // },
         openAddOrEditTaskModal: () => {
             dispatch({ type: actionTypes.OPEN_ADD_OR_EDIT_TASK_MODAL });
         },

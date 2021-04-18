@@ -1,35 +1,33 @@
 import actionTypes from './actionTypes';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 
 //ToDo actions
 export const setTasks = () => (dispatch) => {
-    // this.props.changeLoading(true);
     dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    fetch("http://localhost:3001/task")
+    fetch(`${API_URL}/task`)
         .then(response => response.json())
         .then(data => {
             if (data.error) {
                 throw data.error
             }
-            // this.props.setTasks(data);
             dispatch({ type: actionTypes.SET_TASKS, data });
         })
         .catch(error => {
             dispatch({ type: actionTypes.SET_ERROR, error: error.message });
-            // console.error(error);
+            console.log(error);
         })
         .finally(() => {
-            // this.props.changeLoading(false);
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
 }
 
 export const addTask = (dataObj) => (dispatch) => {
-    // this.props.changeLoading(true);
     dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    fetch("http://localhost:3001/task", {
+    fetch(`${API_URL}/task`, {
         method: "POST",
         body: JSON.stringify(dataObj),
         headers: {
@@ -41,25 +39,20 @@ export const addTask = (dataObj) => (dispatch) => {
             if (data.error) {
                 throw data.error;
             }
-            // this.props.showHideAddOrEdit && this.props.openAddOrEditTaskModal();
-            // this.props.addTask(data);
             dispatch({ type: actionTypes.ADD_TASK, data });
         })
         .catch(error => {
-            // console.log("error: ", error);
             dispatch({ type: actionTypes.SET_ERROR, error: error.message });
         })
         .finally(() => {
-            // this.props.changeLoading(false);
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
 }
 
 export const editTask = (changedTask) => (dispatch) => {
-    // this.props.changeLoading(true);
     dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    fetch("http://localhost:3001/task/" + changedTask._id, {
+    fetch(`${API_URL}/task/` + changedTask._id, {
         method: "PUT",
         body: JSON.stringify(changedTask),
         headers: {
@@ -71,25 +64,20 @@ export const editTask = (changedTask) => (dispatch) => {
             if (data.error) {
                 throw data.error
             }
-            // this.props.changableTask && this.props.setChangableTask();
             dispatch({ type: actionTypes.EDIT_TASK, data });
-            // this.props.editTask(data);
         })
         .catch(error => {
-            // console.log("error: ", error);
             dispatch({ type: actionTypes.SET_ERROR, error: error.message });
         })
         .finally(() => {
-            // this.props.changeLoading(false);
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
 }
 
 export const delOneTask = (id) => (dispatch) => {
-    // this.props.changeLoading(true);
     dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    fetch("http://localhost:3001/task/" + id, {
+    fetch(`${API_URL}/task/` + id, {
         method: "DELETE"
     })
         .then(res => res.json())
@@ -97,24 +85,20 @@ export const delOneTask = (id) => (dispatch) => {
             if (data.error) {
                 throw data.error
             }
-            // this.props.delOneTask(id);
             dispatch({ type: actionTypes.DEL_ONE_TASK, id });
         })
         .catch(error => {
-            // console.log("error: ", error);
             dispatch({ type: actionTypes.SET_ERROR, error: error.message });
         })
         .finally(() => {
-            // this.props.changeLoading(false);
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
 }
 
 export const delSelTasks = (removeTasks) => (dispatch) => {
-    // this.props.changeLoading(true);
     dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    fetch("http://localhost:3001/task", {
+    fetch(`${API_URL}/task`, {
         method: "PATCH",
         body: JSON.stringify({ tasks: Array.from(removeTasks) }),
         headers: {
@@ -126,15 +110,12 @@ export const delSelTasks = (removeTasks) => (dispatch) => {
             if (data.error) {
                 throw data.error
             }
-            // this.props.delSelTasks();
             dispatch({ type: actionTypes.DEL_SEL_TASKS });
         })
         .catch(error => {
-            // console.log("error: ", error);
             dispatch({ type: actionTypes.SET_ERROR, error: error.message });
         })
         .finally(() => {
-            // this.props.changeLoading(false);
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
 }
@@ -144,7 +125,7 @@ export const changeStatus = (task) => (dispatch) => {
 
     const status = task.status === "active" ? "done" : "active";
 
-    fetch(`http://localhost:3001/task/${task._id}`, {
+    fetch(`${API_URL}/task/${task._id}`, {
         method: "PUT",
         body: JSON.stringify({ status }),
         headers: {
@@ -167,20 +148,14 @@ export const changeStatus = (task) => (dispatch) => {
 
 //OneTask actions
 export const setTask = (id, history) => (dispatch) => {
-    // this.setState({
-    //     loading: true
-    // })
     dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    fetch(`http://localhost:3001/task/${id}`)
+    fetch(`${API_URL}/task/${id}`)
         .then(res => res.json())
         .then(data => {
             if (data.error) {
                 throw data.error;
             }
-            // this.setState({
-            //     oneTask: data
-            // });
             dispatch({ type: actionTypes.SET_ONE_TASK, oneTask: data });
         })
         .catch(error => {
@@ -188,22 +163,14 @@ export const setTask = (id, history) => (dispatch) => {
             console.log("error: ", error);
         })
         .finally(() => {
-            // this.setState({
-            //     loading: false
-            // })
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
 }
 
 export const delTask = (id, history) => (dispatch) => {
-    // const { id } = this.props.match.params;
+    dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    // this.setState({
-    //     loading: true
-    // })
-    dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });//
-
-    fetch("http://localhost:3001/task/" + id, {
+    fetch(`${API_URL}/task/` + id, {
         method: "DELETE"
     })
         .then(res => res.json())
@@ -211,25 +178,18 @@ export const delTask = (id, history) => (dispatch) => {
             if (data.error) {
                 throw data.error
             }
-            // const { history } = this.props;
             history.push('/');
         })
         .catch(error => {
-            // this.setState({
-            //     loading: false
-            // })
-            dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });//
+            dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
             console.log("error: ", error);
         });
 }
 
 export const changeTask = (changableTask) => (dispatch) => {
-    // this.setState({
-    //     loading: true
-    // })
     dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
 
-    fetch("http://localhost:3001/task/" + changableTask._id, {
+    fetch(`${API_URL}/task/` + changableTask._id, {
         method: "PUT",
         body: JSON.stringify(changableTask),
         headers: {
@@ -241,11 +201,6 @@ export const changeTask = (changableTask) => (dispatch) => {
             if (data.error) {
                 throw data.error
             }
-
-            // this.setState({
-            //     oneTask: data,
-            //     showEditModal: false
-            // });
             dispatch({ type: actionTypes.SET_ONE_TASK, oneTask: data });
             dispatch({ type: actionTypes.OPEN_EDIT_TASK_MODAL });
         })
@@ -253,9 +208,6 @@ export const changeTask = (changableTask) => (dispatch) => {
             console.log("error: ", error);
         })
         .finally(() => {
-            // this.setState({
-            //     loading: false
-            // })
             dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
         });
 }
@@ -270,7 +222,7 @@ export const searchAndSortTasks = (backendData) => (dispatch) => {
         q += key + "=" + backendData[key] + "&";
     }
 
-    fetch(`http://localhost:3001/task` + q.slice(0, q.length - 1))
+    fetch(`${API_URL}/task` + q.slice(0, q.length - 1))
         .then(res => res.json())
         .then(data => {
             if (data.error) throw data.error;
@@ -289,7 +241,7 @@ export const searchAndSortTasks = (backendData) => (dispatch) => {
 export const submitMyForm = (dataObj, history) => (dispatch) => {
     (async () => {
         try {
-            const response = await fetch("http://localhost:3001/form", {
+            const response = await fetch(`${API_URL}/form`, {
                 method: "POST",
                 body: JSON.stringify(dataObj),
                 headers: {
@@ -301,13 +253,8 @@ export const submitMyForm = (dataObj, history) => (dispatch) => {
                 throw data.error;
             }
             history.push("/");
-            // this.props.resetForm();
             dispatch({ type: actionTypes.RESET_FORM });
         } catch (error) {
-            // this.setState({
-            //     errorMessage: error.message
-            // });
-            // this.props.submitError(error)
             dispatch({ type: actionTypes.SUBMIT_FORM, error });
             console.log(error);
         };

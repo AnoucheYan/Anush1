@@ -6,7 +6,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "react-datepicker/dist/react-datepicker.css";
-import { BrowserRouter } from 'react-router-dom'; // I can import Router and use it instead of BrowserRowter, but Rowter don't save history
+import { BrowserRouter } from 'react-router-dom';
 import store from './Redux/store';
 import { Provider } from 'react-redux';
 
@@ -14,7 +14,7 @@ import { Provider } from 'react-redux';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Provider store={store}>  {/* passing store to app with provider */}
+      <Provider store={store}>
         <App />
       </Provider>
     </BrowserRouter>

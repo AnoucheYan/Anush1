@@ -44,12 +44,7 @@ const ContactForm = (props) => {
         submitFormThunk
     } = props
 
-    // const inputRef = createRef();
     const inputRef = useRef(null);
-
-    // const changeInputValues = (event) => {
-    //     props.changeValues(event);
-    // }
 
     const submitForm = () => {
         const dataObj = props.myState;
@@ -61,38 +56,11 @@ const ContactForm = (props) => {
         }
 
         submitFormThunk(dataObj, props.history);
-
-        // (async () => {
-        //     try {
-        //         const response = await fetch("http://localhost:3001/form", {
-        //             method: "POST",
-        //             body: JSON.stringify(dataObj),
-        //             headers: {
-        //                 "Content-Type": "application/json"
-        //             }
-        //         })
-        //         const data = await response.json();
-        //         if (data.error) {
-        //             throw data.error;
-        //         }
-        //         this.props.history.push("/");
-        //         this.props.resetForm();
-        //     } catch (error) {
-        //         // this.setState({
-        //         //     errorMessage: error.message
-        //         // });
-        //         this.props.submitError(error)
-        //         console.log(error);
-        //     };
-        // })();
     }
 
-    // componentDidMount() {
-    //     this.inputRef.current.focus();
-    // }
     useEffect(() => {
         inputRef.current.focus();
-    }, []);//
+    }, []);
 
 
     const validated = name.valid && email.valid && message.valid;
@@ -158,12 +126,6 @@ const mapDispatchToProps = (dispatch) => {
         changeValues: (event) => {
             dispatch({ type: actionTypes.CHANGE_VALUES, event });
         },
-        // submitError: (error) => {
-        //     dispatch({ type: actionTypes.SUBMIT_FORM, error });
-        // },
-        // resetForm: () => {
-        //     dispatch({ type: actionTypes.RESET_FORM });
-        // },
 
         //thunk
         submitFormThunk: (dataObj, history) => dispatch(submitMyForm(dataObj, history))

@@ -22,13 +22,4 @@ export function emailValidation(email) {
         return undefined;
     }
     return "Enter a valid email";
-};
-
-
-// export function validation(dataObj) {
-//     for (let key in dataObj) {
-//         if (typeof dataObj[key] === "object" && !dataObj[key].valid)
-//             return false;
-//     }
-//     return true;
-// }
+}

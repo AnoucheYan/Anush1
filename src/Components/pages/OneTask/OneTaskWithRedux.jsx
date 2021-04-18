@@ -19,6 +19,7 @@ const OneTask = (props) => {
         oneTask,
         showEditModal,
         loading,
+        
         //functions
         openEditTaskModal,
         setTaskThunk,
@@ -84,22 +85,19 @@ const mapStateToProps = (state) => {
     const {
         oneTask,
         showEditModal,
-        // loading,
+        loading,
     } = state.oneTaskState;
 
     return {
         oneTask,
         showEditModal,
-        loading:state.globalState.loading
+        loading
     }
 
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // changeLoading: (loading) => {
-        //     dispatch({ type: actionTypes.CHANGE_LOADING, loading });
-        // },
         openEditTaskModal: () => {
             dispatch({ type: actionTypes.OPEN_EDIT_TASK_MODAL });
         },
