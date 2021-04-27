@@ -4,4 +4,5 @@
   background-repeat: no-repeat;
   background-size: cover;
   color: rgb(228, 77, 107);
+  min-height: 100vh;
 }
