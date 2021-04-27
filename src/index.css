@@ -1,72 +1,36 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.card{
-  width: 300px;
-  border-radius: 5px;
-  border: 2px solid palevioletred;
-  margin: 10px;
-  padding: 10px;
-}
-
-.card_wrapper{
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-  color:palevioletred;
-}
-
-.my_images, .discription{ 
-  width:80%;
-}
-
-.myButtons{
-  width: 50px;
-  height: 50px;
-  margin: 20px;
-  font-size: 20px;
-  font-weight: bold;
-  border:none;
-  outline:none;
-  background-color: lightcoral;
-  border-radius: 10px;
-}
-
-.result{
-  font-size: 40px;
-  font-weight: bold;
-  color: lightcoral;
-}
-
-*{
+* {
   box-sizing: border-box;
 }
 
-.nav-item{
+textarea {
+  resize: none;
+}
+
+.nav-item {
   padding: 15px 20px;
 }
 
-a{
-  color: palevioletred;
+a {
+  color: rgb(228, 77, 107);
   font-weight: bold;
+  font-size: 20px;
 }
 
-a:hover{
+a:hover {
   text-decoration: none;
-  color: palevioletred;
 }
 
-textarea{
-  resize: none;
+a:active {
+  color: rgb(228, 77, 107);
 }

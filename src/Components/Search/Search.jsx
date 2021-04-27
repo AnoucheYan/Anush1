@@ -1,4 +1,4 @@
-import { Dropdown, DropdownButton, Form, Button, } from 'react-bootstrap';
+import { Dropdown, DropdownButton, Form, Button, Container, Row, Col } from 'react-bootstrap';
 import styles from './search.module.css';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
@@ -6,6 +6,8 @@ import actionTypes from '../../Redux/actionTypes';
 import { uppercaseFirstLetter } from '../../helpers/actionsWithStrings';
 import { searchAndSortTasks } from '../../Redux/actions';
 import isoDate from '../../helpers/IsoDate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 const Search = (props) => {
@@ -16,6 +18,7 @@ const Search = (props) => {
         setDate,
         resetSearch,
         submitSearchThunk,
+        showFilter,
         ...state
     } = props
 
@@ -26,7 +29,8 @@ const Search = (props) => {
         create_lte,
         create_gte,
         complete_lte,
-        complete_gte
+        complete_gte,
+        filter
     } = state
 
     const submitSearch = () => {
@@ -41,36 +45,30 @@ const Search = (props) => {
 
     return (
         <>
-            <div className={styles.container}>
-                <h3>Search</h3>
-                <div className={styles.drops}>
+            <Container className={styles.container1}>
 
-                    <div className={styles.inputContainer}>
-                        <Form.Control
-                            name="tytle"
-                            type="text"
-                            placeholder="Search..."
-                            value={search}
-                            onChange={(e) => changeSearch(e.target.value)}
-                        />
-                    </div>
-
-                    <div className={styles.sortButtonsContainer}>
-                        <div className={styles.sortButtons}>
-                            <DropdownButton
-                                id="dropdown-basic-button"
-                                title={!!!status ? "Status" : uppercaseFirstLetter(status)}
-                            >
-                                <Dropdown.Item onClick={(e) => setDropDownValues("done", "status")}>Done</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("active", "status")}>Active</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("", "status")}>Reset</Dropdown.Item>
-                            </DropdownButton>
+                <Row className="align-items-center">
+                    <Col className="my-2">
+                        <div className="d-flex">
+                            <Form.Control
+                                name="tytle"
+                                type="text"
+                                placeholder="Search task..."
+                                value={search}
+                                onChange={(e) => changeSearch(e.target.value)}
+                            />
+                            <Button
+                                onClick={submitSearch}>
+                                <FontAwesomeIcon icon={faSearch} />
+                            </Button>
                         </div>
-
-                        <div className={styles.sortButtons}>
+                    </Col>
+                    <Col className="my-1">
+                        <div className="d-flex justify-content-end">
                             <DropdownButton
+                                className="m-1"
                                 id="dropdown-basic-button"
-                                title={!!!sort ? "Sort" : sort.toUpperCase().replaceAll("_", " ")}
+                                title={!!!sort ? "SORT" : sort.toUpperCase().replaceAll("_", " ")}
                             >
                                 <Dropdown.Item onClick={(e) => setDropDownValues("a-z", "sort")}>A-Z</Dropdown.Item>
                                 <Dropdown.Item onClick={(e) => setDropDownValues("z-a", "sort")}>Z-A</Dropdown.Item>
@@ -80,55 +78,99 @@ const Search = (props) => {
                                 <Dropdown.Item onClick={(e) => setDropDownValues("completion_date_newest", "sort")}>Completion date newest</Dropdown.Item>
                                 <Dropdown.Item onClick={(e) => setDropDownValues("", "sort")}>Reset</Dropdown.Item>
                             </DropdownButton>
+                            <Button
+                                onClick={showFilter}
+                                variant="success"
+                                className="m-1"
+                            >
+                                <FontAwesomeIcon icon={faFilter} />
+                            </Button>
+                            <Button
+                                variant="info"
+                                onClick={resetSearch}
+                                className="m-1"
+                            >
+                                RESET
+                        </Button>
                         </div>
-                    </div>
+                    </Col>
+                </Row>
+            </Container>
 
-                </div>
+            {
+                filter && <Container className={styles.container2}>
+                    <Row>
+                        <Col>
+                            <DropdownButton
+                                className="m-2"
+                                id="dropdown-basic-button"
+                                title={!!!status ? "Status" : uppercaseFirstLetter(status)}
+                            >
+                                <Dropdown.Item onClick={(e) => setDropDownValues("done", "status")}>Done</Dropdown.Item>
+                                <Dropdown.Item onClick={(e) => setDropDownValues("active", "status")}>Active</Dropdown.Item>
+                                <Dropdown.Item onClick={(e) => setDropDownValues("", "status")}>Reset</Dropdown.Item>
+                            </DropdownButton>
+                        </Col>
+                    </Row>
 
-                <div className={styles.datePickerContainer}>
-                    <div>
-                        <div className={styles.datePicker}>
-                            Create lte: <DatePicker
+                    <Row className="my-2">
+                        <Col>
+                            <span>Create lte:</span>
+                        </Col>
+                        <Col>
+                            <DatePicker
                                 selected={create_lte}
                                 onChange={date => setDate("create_lte", date)}
                             />
-                        </div>
-                        <div className={styles.datePicker}>
-                            Create gte: <DatePicker
+                        </Col>
+                    </Row>
+                    <Row className="my-2">
+                        <Col>
+                            <span>Create gte:</span>
+                        </Col>
+                        <Col>
+                            <DatePicker
                                 selected={create_gte}
                                 onChange={date => setDate("create_gte", date)}
                             />
-                        </div>
-                        <div className={styles.datePicker}>
-                            Complete lte: <DatePicker
+                        </Col>
+                    </Row>
+                    <Row className="my-2">
+                        <Col>
+                            <span>Complete lte:</span>
+                        </Col>
+                        <Col>
+                            <DatePicker
                                 selected={complete_lte}
                                 onChange={date => setDate("complete_lte", date)}
                             />
-                        </div>
-                        <div className={styles.datePicker}>
-                            Complete gte: <DatePicker
+                        </Col>
+                    </Row>
+                    <Row className="my-2">
+                        <Col>
+                            <span>Complete gte:</span>
+                        </Col>
+                        <Col>
+                            <DatePicker
                                 selected={complete_gte ? complete_gte : null}
                                 onChange={date => setDate("complete_gte", date)}
                             />
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
 
-                    <div>
-                        <Button
-                            variant="info"
-                            onClick={submitSearch}
-                        >
-                            Search
-                        </Button>
-                        <Button
-                            variant="info ml-4"
-                            onClick={resetSearch}
-                        >
-                            Reset
-                        </Button>
-                    </div>
-                </div>
-            </div>
+                    <Row>
+                        <Col>
+                            <Button
+                                variant="info m-2"
+                                onClick={submitSearch}
+                            >
+                                Search And/Or Filter
+                                </Button>
+                        </Col>
+                    </Row>
+
+                </Container>
+            }
         </>
     );
 }
@@ -142,7 +184,8 @@ const mapStateToProps = (state) => {
         create_lte,
         create_gte,
         complete_lte,
-        complete_gte
+        complete_gte,
+        filter
     } = state.searchState
 
     return {
@@ -152,7 +195,8 @@ const mapStateToProps = (state) => {
         create_lte,
         create_gte,
         complete_lte,
-        complete_gte
+        complete_gte,
+        filter
     }
 
 }
@@ -163,6 +207,7 @@ const mapDispatchToProps = (dispatch) => {
         changeSearch: (value) => dispatch({ type: actionTypes.CHANGE_SEARCH, value }),
         setDate: (dateType, date) => dispatch({ type: actionTypes.SET_DATE, dateType, date }),
         resetSearch: () => dispatch({ type: actionTypes.RESET_SEARCH }),
+        showFilter: () => dispatch({ type: actionTypes.SHOW_FILTER }),
         //thunks
         submitSearchThunk: (backendData) => dispatch(searchAndSortTasks(backendData))
     }

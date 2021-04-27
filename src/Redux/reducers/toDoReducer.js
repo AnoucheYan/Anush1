@@ -9,7 +9,6 @@ const initialState = {
     showHideAddOrEdit: false,
     confirmRemoving: false,
     changableTask: null,
-
     success: "",
     error: ""
 };
@@ -140,7 +139,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.CHANGE_STATUS:
             let tasks = [...state.tasks];
             const idx = tasks.findIndex(task => task._id === action.task._id)
-            tasks[idx]= action.task
+            tasks[idx] = action.task
             return {
                 ...state,
                 tasks

@@ -1,16 +1,19 @@
-.formContainer{
-    width:50%;
-    margin: 0  auto;
-    color: palevioletred;
+.formContainer {
+    width: 50%;
+    margin: 0 auto;
+    color:rgb(228, 77, 107);
+    padding: 40px;
+    margin-top: 20px;
+    background-color: rgba(233, 227, 228, 0.7);
 }
 
-.formGroup{
+.formGroup {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-.errorStyle{
+.errorStyle {
     color: red;
     text-transform: uppercase;
 }

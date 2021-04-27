@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import styles from './contactForm.module.css';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import actionTypes from '../../Redux/actionTypes';
 import { submitMyForm } from '../../Redux/actions';
 
 
-const inputsItems = [ 
+const inputsItems = [
     {
         name: "name",
         controlId: "formBasicName",
@@ -93,20 +93,24 @@ const ContactForm = (props) => {
 
     return (
         <Container className={styles.formContainer}>
-            <Form onSubmit={(e) => e.preventDefault()}>
-                {inputs}
-                <p className={styles.errorStyle}>
-                    {errorMessage}
-                </p>
-                <Button
-                    variant="primary"
-                    type="submit"
-                    onClick={submitForm}
-                    disabled={!validated}
-                >
-                    Submit
+            <Row>
+                <Col>
+                    <Form onSubmit={(e) => e.preventDefault()}>
+                        {inputs}
+                        <p className={styles.errorStyle}>
+                            {errorMessage}
+                        </p>
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            onClick={submitForm}
+                            disabled={!validated}
+                        >
+                            Submit
                     </Button>
-            </Form>
+                    </Form>
+                </Col>
+            </Row>
         </Container>
     );
 }

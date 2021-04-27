@@ -15,7 +15,6 @@ const Task = ({
     disabled,
     checked,
     setChangableTask,
-
     changeStatusThunk
 }) => {
 
@@ -58,9 +57,10 @@ const Task = ({
                 </p>
             </div>
 
-            <div className="mt-3">
+            <div >
                 <Button
                     variant="danger"
+                    className="m-1"
                     onClick={() => handleDelTask(task._id)}
                     disabled={disabled}
                 >
@@ -69,7 +69,7 @@ const Task = ({
 
                 <Button
                     variant="warning"
-                    className="ml-3"
+                    className="m-1"
                     onClick={() => setChangableTask(task)}
                     disabled={disabled}
                 >
@@ -78,7 +78,7 @@ const Task = ({
 
                 <Button
                     variant="info"
-                    className="ml-3"
+                    className="m-1"
                     onClick={() => changeStatusThunk(task)}
                     disabled={disabled}
                 >
@@ -100,7 +100,7 @@ Task.propTypes = {
     disabled: PropTypes.bool.isRequired,
     checked: PropTypes.bool.isRequired,
     setChangableTask: PropTypes.func,
-    changeStatusThunk:PropTypes.func.isRequired
+    changeStatusThunk: PropTypes.func.isRequired
 }
 
 export default memo(Task);

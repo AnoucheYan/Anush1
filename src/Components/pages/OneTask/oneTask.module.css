@@ -2,11 +2,12 @@
     display: flex;
     justify-content: center;
     margin: 20px;
+    height: 100vh;
 }
 
 .oneTask{
-    color: palevioletred;
-    background-color: rgba(218, 134, 162, .5);
+    color:rgb(228, 77, 107);
+    background-color: rgba(233, 227, 228, 0.7);
     width: 50%;
     box-shadow: 5px 5px 20px palevioletred;
     display: flex;

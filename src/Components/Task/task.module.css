@@ -1,25 +1,26 @@
-.task{
-    width: 100%;
-    border-radius: 5px;
-    background-color: rgba(218, 134, 162, .5);
-    color: palevioletred;
-    font-weight: bold;
-    padding: 30px;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+.task {
+  width: 100%;
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: rgba(233, 227, 228, 0.7);
+  box-shadow: 5px 5px 20px palevioletred;
 }
 
-.titleStyle{
+.titleStyle {
   font-size: 30px;
   margin: 15px 0;
+  overflow-wrap: break-word;
 }
 
-.parMargin{
+.parMargin {
   margin: 15px 0;
+  overflow-wrap: break-word;
 }
 
-.checked{
+.checked {
   opacity: .6;
 }
-

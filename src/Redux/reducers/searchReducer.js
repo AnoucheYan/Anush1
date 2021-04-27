@@ -8,7 +8,8 @@ const initialState = {
     create_lte: "",
     create_gte: "",
     complete_lte: "",
-    complete_gte: ""
+    complete_gte: "",
+    filter: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,7 +35,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...initialState
             }
-
+        case actionTypes.SHOW_FILTER: {
+            return {
+                ...state,
+                filter: !state.filter
+            }
+        }
         default: return state;
     }
 }

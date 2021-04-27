@@ -1,19 +1,7 @@
 .App {
   text-align: center;
-}
-
-.users{
-  border: 2px solid purple;
-  margin: 15px;
-}
-
-.user{
-  display: flex;
-  flex-direction: column;
-  color: purple;
-  padding: 5px;
-}
-
-.heading{
-  color: purple;
+  background-image: url("../src/assets/images/background.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: rgb(228, 77, 107);
 }

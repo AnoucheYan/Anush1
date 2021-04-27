@@ -1,38 +1,9 @@
-.container{
-    background-color: rgba(218, 134, 162, .5);
-    color: palevioletred;
-    padding: 30px 20px;
-    width: 100%;
+.container1{
+    text-align: end;
+    background-color: rgba(233, 227, 228, 0.7);
 }
 
-.drops{
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin: 10px 0;
-}
-
-.inputContainer{
-    width: 30%;
-}
-
-.sortButtonsContainer{
-    display: flex;
-    justify-content: space-between;
-    width: 30%;
-}
-
-.sortButtons{
-    margin-left: 15px;
-}
-
-.datePickerContainer{
-    width: 100%;
-}
-
-.datePicker{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
+.container2{
+    text-align: center;
+    background-color: rgba(233, 227, 228, 0.7);
 }

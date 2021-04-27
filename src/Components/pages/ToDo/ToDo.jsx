@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Search from '../../Search/Search';
 
+
 const ToDo = (props) => {
 
     const {
@@ -37,7 +38,7 @@ const ToDo = (props) => {
         editTaskThunk,
         delOneTaskThunk,
         delSelTasksThunk,
-        changeStatusThunk
+        changeStatusThunk,
     } = props;
 
     const handleSubmit = (dataObj) => {
@@ -52,7 +53,7 @@ const ToDo = (props) => {
     }, [setTasksThunk]);
 
     useEffect(() => {
-        error && toast.error(`🦄 ${error}`, {
+        error && toast.error(`${error}`, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -64,7 +65,7 @@ const ToDo = (props) => {
     }, [error]);
 
     useEffect(() => {
-        success && toast.success(`🦄 ${success}`, {
+        success && toast.success(`${success}`, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -77,9 +78,11 @@ const ToDo = (props) => {
 
     const Tasks = tasks.map(task => {
         return (
-            <Col key={task._id}
+            <Col
+                key={task._id}
                 xs={12} sm={6} md={4} lg={3}
-                className="d-flex justify-content-center mt-3">
+                className="d-flex justify-content-center m-4"
+            >
                 <Task
                     task={task}
                     handleDelTask={delOneTaskThunk}
@@ -97,48 +100,51 @@ const ToDo = (props) => {
         <>
             <Container>
 
+                <Row className="my-2">
+                    <Col>
+                        <h1 className={styles.heading}>To Do List</h1>
+                    </Col>
+                </Row>
+
                 <Row>
                     <Col>
                         <Search />
                     </Col>
                 </Row>
 
-                <Row className="justify-content-center mt-4">
-                    <Col>
-                        <h1 className={styles.heading}>To Do</h1>
-                        <Button
-                            variant="primary"
-                            onClick={openAddOrEditTaskModal}
-                        >
-                            Add task
-                                </Button>
-                    </Col>
-                </Row>
-
-                <Row className="justify-content-center mt-4">
-                    {!tasks.length && <div>You havn't any tasks!!!</div>}
-                    {Tasks}
-                </Row>
-
                 <Row className="mt-4">
                     <Col>
                         <Button
+                            variant="primary"
+                            className="m-2"
+                            onClick={openAddOrEditTaskModal}
+                        >
+                            Add task
+                        </Button>
+
+                        <Button
+                            variant="info"
+                            className="m-2"
+                            onClick={checkAllTasks}
+                            disabled={!!!tasks.length}
+                        >
+                            {isAllChecked ? 'Uncheck all' : 'Ckeck all'}
+                        </Button>
+
+                        <Button
                             variant="danger"
+                            className="m-2"
                             disabled={!!!removeTasks.size}
                             onClick={showHideDeleteModal}
                         >
                             Remove
-                                </Button>
-
-                        <Button
-                            variant="primary"
-                            className="ml-3"
-                            onClick={checkAllTasks}
-                            disabled={!!!tasks.length}
-                        >
-                            {isAllChecked ? 'Remove selected' : 'Select all'}
                         </Button>
                     </Col>
+                </Row>
+
+                <Row className="justify-content-center">
+                    {!tasks.length && <div>You havn't any tasks!!!</div>}
+                    {Tasks}
                 </Row>
 
             </Container>
