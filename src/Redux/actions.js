@@ -236,6 +236,29 @@ export const searchAndSortTasks = (backendData) => (dispatch) => {
         });
 }
 
+export const searchTasks = (backendData) => (dispatch) => {
+    dispatch({ type: actionTypes.CHANGE_LOADING, loading: true });
+
+    let q = "?"
+    for (let key in backendData) {
+        q += key + "=" + backendData[key] + "&";
+    }
+
+    fetch(`${API_URL}/task` + q.slice(0, q.length - 1))
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) throw data.error;
+            dispatch({ type: actionTypes.SET_TASKS, data });
+        })
+        .catch(error => {
+            dispatch({ type: actionTypes.SET_ERROR, error: error.message });
+        })
+        .finally(() => {
+            dispatch({ type: actionTypes.CHANGE_LOADING, loading: false });
+             dispatch({ type: actionTypes.RESET_SEARCH })
+        });
+}
+
 
 //ContactForm action
 export const submitMyForm = (dataObj, history) => (dispatch) => {

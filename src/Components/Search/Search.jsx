@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
 import actionTypes from '../../Redux/actionTypes';
 import { uppercaseFirstLetter } from '../../helpers/actionsWithStrings';
-import { searchAndSortTasks } from '../../Redux/actions';
+import { searchAndSortTasks, searchTasks } from '../../Redux/actions';
 import isoDate from '../../helpers/IsoDate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +18,7 @@ const Search = (props) => {
         setDate,
         resetSearch,
         submitSearchThunk,
+        submitSearchAndFilterThunk,
         showFilter,
         ...state
     } = props
@@ -32,6 +33,16 @@ const Search = (props) => {
         complete_gte,
         filter
     } = state
+
+    const submitSearchAndFilter = () => {
+        const backendData = {};
+        for (let key in state) {
+            if (state[key]) {
+                backendData[key] = typeof state[key] === "object" ? isoDate(state[key]) : state[key];
+            }
+        }
+        submitSearchAndFilterThunk(backendData);
+    }
 
     const submitSearch = () => {
         const backendData = {};
@@ -58,26 +69,15 @@ const Search = (props) => {
                                 onChange={(e) => changeSearch(e.target.value)}
                             />
                             <Button
-                                onClick={submitSearch}>
+                                onClick={submitSearch}
+                            >
                                 <FontAwesomeIcon icon={faSearch} />
                             </Button>
                         </div>
                     </Col>
                     <Col className="my-1">
-                        <div className="d-flex justify-content-end">
-                            <DropdownButton
-                                className="m-1"
-                                id="dropdown-basic-button"
-                                title={!!!sort ? "SORT" : sort.toUpperCase().replaceAll("_", " ")}
-                            >
-                                <Dropdown.Item onClick={(e) => setDropDownValues("a-z", "sort")}>A-Z</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("z-a", "sort")}>Z-A</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("creation_date_oldest", "sort")}>Creation date oldest</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("creation_date_newest", "sort")}>Creation date newest</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("Completion_date_oldest", "sort")}>Completion date oldest</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("completion_date_newest", "sort")}>Completion date newest</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("", "sort")}>Reset</Dropdown.Item>
-                            </DropdownButton>
+                        <div >
+
                             <Button
                                 onClick={showFilter}
                                 variant="success"
@@ -85,13 +85,6 @@ const Search = (props) => {
                             >
                                 <FontAwesomeIcon icon={faFilter} />
                             </Button>
-                            <Button
-                                variant="info"
-                                onClick={resetSearch}
-                                className="m-1"
-                            >
-                                RESET
-                        </Button>
                         </div>
                     </Col>
                 </Row>
@@ -101,15 +94,30 @@ const Search = (props) => {
                 filter && <Container className={styles.container2}>
                     <Row>
                         <Col>
-                            <DropdownButton
-                                className="m-2"
-                                id="dropdown-basic-button"
-                                title={!!!status ? "Status" : uppercaseFirstLetter(status)}
-                            >
-                                <Dropdown.Item onClick={(e) => setDropDownValues("done", "status")}>Done</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("active", "status")}>Active</Dropdown.Item>
-                                <Dropdown.Item onClick={(e) => setDropDownValues("", "status")}>Reset</Dropdown.Item>
-                            </DropdownButton>
+                            <div className = "d-flex justify-content-center">
+                                <DropdownButton
+                                    className="m-2"
+                                    id="dropdown-basic-button"
+                                    title={!!!status ? "Status" : uppercaseFirstLetter(status)}
+                                >
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("done", "status")}>Done</Dropdown.Item>
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("active", "status")}>Active</Dropdown.Item>
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("", "status")}>Reset</Dropdown.Item>
+                                </DropdownButton>
+                                <DropdownButton
+                                    className="m-2"
+                                    id="dropdown-basic-button"
+                                    title={!!!sort ? "SORT" : sort.toUpperCase().replaceAll("_", " ")}
+                                >
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("a-z", "sort")}>A-Z</Dropdown.Item>
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("z-a", "sort")}>Z-A</Dropdown.Item>
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("creation_date_oldest", "sort")}>Creation date oldest</Dropdown.Item>
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("creation_date_newest", "sort")}>Creation date newest</Dropdown.Item>
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("Completion_date_oldest", "sort")}>Completion date oldest</Dropdown.Item>
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("completion_date_newest", "sort")}>Completion date newest</Dropdown.Item>
+                                    <Dropdown.Item onClick={(e) => setDropDownValues("", "sort")}>Reset</Dropdown.Item>
+                                </DropdownButton>
+                            </div>
                         </Col>
                     </Row>
 
@@ -161,11 +169,20 @@ const Search = (props) => {
                     <Row>
                         <Col>
                             <Button
-                                variant="info m-2"
-                                onClick={submitSearch}
+                                variant="info"
+                                className="m-1"
+                                onClick={submitSearchAndFilter}
                             >
                                 Search And/Or Filter
-                                </Button>
+                            </Button>
+
+                            <Button
+                                variant="info"
+                                onClick={resetSearch}
+                                className="m-1"
+                            >
+                                RESET
+                            </Button>
                         </Col>
                     </Row>
 
@@ -209,7 +226,8 @@ const mapDispatchToProps = (dispatch) => {
         resetSearch: () => dispatch({ type: actionTypes.RESET_SEARCH }),
         showFilter: () => dispatch({ type: actionTypes.SHOW_FILTER }),
         //thunks
-        submitSearchThunk: (backendData) => dispatch(searchAndSortTasks(backendData))
+        submitSearchThunk: (backendData) => dispatch(searchTasks(backendData)),
+        submitSearchAndFilterThunk: (backendData) => dispatch(searchAndSortTasks(backendData))
     }
 }
 
