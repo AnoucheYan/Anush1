@@ -34,7 +34,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.RESET_SEARCH:
             return {
                 ...initialState,
-                filter: true,
             }
         case actionTypes.SHOW_FILTER: {
             return {
